@@ -9,9 +9,10 @@ This handbook turns the architecture documents into a controlled build sequence.
 3. [Delivery sequence](00-program/02-DELIVERY-SEQUENCE.md)
 4. [Sriee companion program](00-program/03-SRIEE-COMPANION-PROGRAM.md)
 5. [Capability delivery program](00-program/04-CAPABILITY-ROADMAP.md)
-6. Read the function map for the component being changed.
-7. Execute the matching build-stage guide.
-8. Append coding, testing, deep-dive, and version records.
+6. [Developer coach and wellness program](00-program/05-DEVELOPER-COACH-WELLNESS-PROGRAM.md)
+7. Read the function map for the component being changed.
+8. Execute the matching build-stage guide.
+9. Append coding, testing, deep-dive, and version records.
 
 Current truth: [Status dashboard](STATUS-DASHBOARD.md).
 
@@ -45,6 +46,7 @@ Program-level and historical records:
 | 190000–190099 | Observability and operations | [operations](01-function-maps/190-OBSERVABILITY-OPERATIONS.md) |
 | 200000–200099 | Plugin platform | [plugin-platform](01-function-maps/200-PLUGIN-PLATFORM.md) |
 | 210000–210099 | Sriee companion experience | [sriee-companion](01-function-maps/210-SRIEE-COMPANION.md) |
+| 220000–220099 | Developer coach and wellness | [developer-coach-wellness](01-function-maps/220-DEVELOPER-COACH-WELLNESS.md) |
 
 ## Build stages
 
@@ -58,7 +60,7 @@ Stages are executed in numeric order. A later stage may be explored, but impleme
 | 03 | WPF desktop and secure transport |
 | 04 | First “continue project” vertical slice |
 | 05 | Coding, Git, terminal, and Docker assistance |
-| 06 | Memory, RAG, voice, vision, and Sriee companion context |
+| 06 | Memory, RAG, voice, vision, Sriee, developer coaching, and general wellness |
 | 07 | Plugins, hardening, packaging, and release |
 
 ## Status truth

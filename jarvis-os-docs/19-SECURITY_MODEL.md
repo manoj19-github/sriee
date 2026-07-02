@@ -2,7 +2,7 @@
 
 ## Protected assets
 
-User files, credentials, personal memory, audio/screens, source code, signing keys, device identity, approvals, audit integrity, and OS availability.
+User files, credentials, personal memory, wellness/medication/mood records, audio/screens, source code, signing keys, device identity, approvals, audit integrity, and OS availability.
 
 ## Principal threats
 

@@ -16,6 +16,7 @@ This repository is the source of truth for JARVIS OS: a Python/FastAPI/LangGraph
 - Runtime behavior: `01-MASTER_PROMPT.md` and `prompts/`
 - Step-by-step implementation: `implementation/README.md`
 - Consolidated capability roadmap: `41-SRIEE_CAPABILITY_ROADMAP.md`
+- Developer coach and wellness: `42-DEVELOPER_COACH_WELLNESS.md`
 
 ## Non-negotiable invariants
 

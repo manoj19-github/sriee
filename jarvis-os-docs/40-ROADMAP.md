@@ -28,15 +28,19 @@ Local wake word/STT/TTS, visible privacy controls, accessibility and noisy-room 
 
 Female voice profile, text/voice relationship settings, morning/evening briefings, consented routines, original stories/jokes, opt-in playful romantic conversation, and immediate stop/private controls.
 
-## Milestone 6 — Visible sensors
+## Milestone 6 — Developer coach and general wellness
+
+Developer profile, learning plans, trusted progress, quizzes/challenges, workflow help, project/career coaching, achievements, bounded proactive prompts, manual wellness records, optional connectors, configurable care reminders and non-diagnostic check-ins.
+
+## Milestone 7 — Visible sensors
 
 Camera session controls, local presence, optional enrolled-face personalization, uncertain expression cues, document/QR scanning and biometric deletion/liveness evaluation.
 
-## Milestone 7 — Integrations
+## Milestone 8 — Integrations
 
 Calendar/reminders, notifications, media, system health, browser/research and draft-first email behind independent adapters and grants.
 
-## Milestone 8 — Extensibility
+## Milestone 9 — Extensibility
 
 Out-of-process plugin SDK, signing, permission review, sample plugins.
 

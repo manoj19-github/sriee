@@ -24,6 +24,10 @@ Add task/reminder scheduling, calendar, weather, GitHub and notification adapter
 
 Exit: timezone/DST, stale connector, duplicate reminder, missed notification, private lock-screen and revoke tests pass.
 
+Add the developer-coach profile, learning plans, trusted progress, lessons/quizzes/challenges, project/career coaching, achievements and bounded proactive workflow suggestions through `220000–220015`.
+
+Exit: fabricated progress, copied protected learning content, no-consent inspection, reminder fatigue, inappropriate humor and external career-profile write tests pass.
+
 ## Phase D — Sriee conversation
 
 1. Ship text-only Sriee profile and relationship boundary filter.
@@ -40,6 +44,10 @@ Exit: affection/romance opt-in, rejection, intensity, topic exclusion, age safet
 Add microphone sessions, wake word, local/online STT, camera sessions, presence, optional local face enrollment/matching, expression cues, QR/document scanning and screen understanding.
 
 Exit: indicators, kill/revoke, false wake, uncertain transcript, device loss, raw-artifact expiry, liveness/spoof, false match, deletion, cloud-egress denial and forbidden-inference tests pass.
+
+Optional general-wellness records and connectors (`220016–220024`) follow separate consent, storage, egress and deletion controls. Ship manual entry before provider connections and descriptive display before proactive reminders.
+
+Exit: source/unit/freshness, conflict, medication-boundary, diagnostic-claim, urgent-language, lock-screen privacy and verified deletion tests pass.
 
 ## Phase F — Desktop, media and information
 

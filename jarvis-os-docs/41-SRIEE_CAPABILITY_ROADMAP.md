@@ -11,9 +11,9 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | # | Area | Planned experience | Primary ownership |
 |---:|---|---|---|
 | 1 | Voice assistant | Wake word, natural multi-turn speech, interruption, VAD, noise handling, offline/online STT and female TTS. Voice matching may personalize but cannot authorize high-risk work alone. | Voice/vision `180xxx`; security `130xxx` |
-| 2 | AI conversation | Contextual dialogue, approved long-term memory, humor, stories, translation, summarization, brainstorming, explanation and daily conversation. | LangGraph `120xxx`; memory `140xxx`; Sriee `210xxx` |
-| 3 | Personal assistant | Morning/evening briefings with time, weather, calendar, reminders, tasks, GitHub, news, system health and goals. | Sriee `210002`, `210016`; connector plugins |
-| 4 | Daily planner | To-dos, notes, goals, meetings, recurring tasks, focus timer, time blocking and Pomodoro. | Sriee/task APIs; calendar/task plugins |
+| 2 | AI conversation | Contextual dialogue, approved long-term memory, humor, stories, translation, summarization, brainstorming, explanation and daily conversation. | LangGraph `120xxx`; memory `140xxx`; Sriee `210xxx`; coach `220xxx` |
+| 3 | Personal assistant | Morning/evening briefings with time, weather, calendar, reminders, tasks, GitHub, news, system health and goals. | Sriee `210002`, `210016`; coach `220001`; connector plugins |
+| 4 | Daily planner | To-dos, notes, goals, meetings, recurring tasks, focus timer, time blocking and Pomodoro. | Coach `220005`, `220012`; task/calendar plugins |
 | 5 | Smart reminders | One-time and recurring reminders with timezone, acknowledgement, snooze, expiry and quiet-hour behavior. | Task scheduler; desktop notifications |
 | 6 | Coding assistant | Generate, explain, debug, review, refactor and test code; APIs, SQL, React, Flutter, FastAPI, Docker, Kubernetes, LangGraph and documentation. | LangGraph `120xxx`; developer `170xxx` |
 | 7 | VS Code integration | Open projects, create/rename/search files, explain/fix errors, run/debug projects and install approved packages. | Developer `170000–170005`; executor `160xxx` |
@@ -29,8 +29,8 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | 17 | Screen understanding | Read permitted VS Code, browser, terminal, PDF, image, log, diagram and chart context with provenance. | Voice/vision `180006–180009` |
 | 18 | OCR | Extract bounded text and geometry from permitted images, PDFs and screenshots. | Voice/vision `180007–180010` |
 | 19 | Memory | Remember approved projects, coding style, commands, music and routines; inspect, correct, export, expire and delete records. | Data/memory `140006–140009`, `140012` |
-| 20 | Learning | Propose patterns for IDE, hours, habits and tools; suggestions require confirmation before persistent memory or action. | Memory `140xxx`; Sriee `210006–210008` |
-| 21 | AI coworker | Plan work, create scoped changes, run tests, explain outcomes and request approval for material actions. | LangGraph `120xxx`; executor/developer maps |
+| 20 | Learning | Track user-confirmed course/practice progress, teach bounded topics, quiz, create challenges and recommend next steps; suggestions require confirmation before persistent memory or action. | Memory `140xxx`; Sriee `210006–210008`; coach `220005–220010` |
+| 21 | AI coworker | Plan work, create scoped changes, run tests, explain outcomes, review evidence and request approval for material actions. | LangGraph `120xxx`; developer maps; coach `220003–220015` |
 | 22 | Research agent | Research official documentation, repositories, APIs and papers; return concise source-linked summaries. | LangGraph specialist; browser/retrieval plugins |
 | 23 | Email assistant | Read/summarize/categorize permitted mail and draft replies. Sending always uses recipient/content preview and approval. | Email plugin; policy `130xxx` |
 | 24 | Calendar assistant | Read schedules, create events, prepare meeting links/reminders and weekly plans. Writes require scoped confirmation. | Calendar plugin; Sriee briefings |
@@ -39,11 +39,11 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | 27 | Plugin marketplace | Signed third-party integrations such as Home Assistant, Slack, Discord, Jira, Trello and Notion. | Plugin platform `200xxx` |
 | 28 | Multi-agent system | LangGraph coordinates bounded planner, coding, desktop, browser, vision, memory, research, Git, Docker, calendar, security, file and voice specialists. | LangGraph `120xxx`; agent blueprint |
 | 29 | Automation | Scheduled routines such as opening an approved development workspace at 9 AM. Each action retains its normal scope and approval tier. | Scheduler; Sriee routines; executor |
-| 30 | Smart suggestions | Capped, dismissible suggestions for failed builds, breaks and resource pressure rather than frequent interruptions. | Sriee `210008`; observability `190xxx` |
+| 30 | Smart suggestions | Capped, dismissible suggestions for failed builds, learning, breaks and resource pressure rather than frequent interruptions. | Sriee `210008`; coach `220002–220004`, `220020`, `220023`; observability `190xxx` |
 | 31 | Security | Local session authentication, permission center, audit trail, encryption and OS-backed authentication. Face matching personalizes only; Windows Hello may authenticate through OS APIs. | Security `130xxx`; desktop `150008–150009` |
 | 32 | Offline AI | Optional local STT/TTS, embeddings and language models with explicit cloud routing and data-egress policy. | Infrastructure/provider layer |
 | 33 | Developer mode | Scoped terminal, Docker/Kubernetes, Git, API/database testing and log analysis with stronger previews and receipts. | Developer `170xxx`; executor `160xxx` |
-| 34 | System health | Monitor CPU, RAM, GPU, disk, network, battery and available temperatures with thresholds and privacy-safe history. | Observability `190xxx`; native adapters |
+| 34 | System health and wellness | Monitor CPU, RAM, GPU, disk, network, battery and available temperatures; optionally organize consented wearable/manual wellness information without diagnosis. | Observability `190xxx`; coach/wellness `220016–220024`; native adapters |
 | 35 | Future ecosystem | Smart-home, mobile, wearable, multi-device, multi-user, custom-agent, plugin SDK and enterprise modes after separate threat models. | Plugin platform and future allocations |
 
 ## Sriee romantic companion mode

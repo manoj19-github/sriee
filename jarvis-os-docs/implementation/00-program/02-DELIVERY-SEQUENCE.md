@@ -47,11 +47,11 @@ Add scoped patching, terminal specifications, Git mutations, Docker lifecycle, t
 
 Gate: no work escapes project roots or mutates remotes without exact approval.
 
-## Stage 06 — Context and Sriee companion
+## Stage 06 — Context, Sriee and developer wellness
 
-Add consented memory, project RAG, request-scoped UIA/OCR, opt-in voice/camera, local face enrollment, and the Sriee companion experience. Deliver sensors independently before combining them into presence-triggered routines.
+Add consented memory, project RAG, request-scoped UIA/OCR, opt-in voice/camera, local face enrollment, Sriee companion, developer learning/career coaching, proactive workflow help and optional general-wellness organization. Deliver data sources independently before combining them into proactive routines.
 
-Gate: ACL, deletion, prompt-injection, recording indicator, biometric-template protection, false-recognition, expression-uncertainty, persona-boundary, immediate sensor kill, and privacy tests pass.
+Gate: ACL, deletion, prompt-injection, recording indicator, biometric-template protection, false-recognition, expression-uncertainty, persona-boundary, coaching truthfulness, proactive cooldown, wellness claim/medication boundaries, urgent-language handling, immediate sensor kill, and privacy tests pass.
 
 ## Stage 07 — Release
 

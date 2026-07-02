@@ -1,4 +1,4 @@
-# Stage 06 — Memory, RAG, Voice, Vision, and Sriee
+# Stage 06 — Memory, RAG, Voice, Vision, Sriee, and Developer Wellness
 
 ## Dependencies
 
@@ -6,7 +6,7 @@ Core task safety and privacy center are stable. Each feature launches independen
 
 ## Functions
 
-140006–140012, 180000–180016, and 210000–210016.
+140006–140012, 180000–180016, 210000–210016, and 220000–220024.
 
 ## Steps
 
@@ -33,11 +33,18 @@ Core task safety and privacy center are stable. Each feature launches independen
 21. Add original romantic/bedtime stories and humor with copyright, privacy and repetition checks.
 22. Add playful non-explicit flirting with immediate rejection handling and serious-context suppression.
 23. Add evening briefings with tomorrow's schedule, honest activity counters and no productivity shaming.
+24. Add the honest developer-coach profile, sourced briefings and bounded proactive prompts.
+25. Add workflow-friction observations and consent-before-inspection diagnostics.
+26. Add learning plans, trusted progress, lessons, quizzes, coding challenges and next-topic recommendations.
+27. Add evidence-backed code review, project planning, achievements, motivation and career coaching.
+28. Add manual wellness records, then revocable wearable connectors with separate sensitive storage.
+29. Add descriptive wellness summaries, configurable care reminders and self-reported emotional check-ins.
+30. Add lifestyle/resource suggestions and the non-diagnostic/medication/urgent-language boundary filter.
 
 ## Required tests
 
-Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, romance opt-in/out, rejection, serious-context suppression, age safety, copyrighted-content boundaries, companion-originated risky actions, and immediate kill control.
+Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, romance opt-in/out, rejection, serious-context suppression, age safety, copyrighted-content boundaries, fabricated learning/project progress, no-consent diagnostic inspection, proactive fatigue, wellness unit/freshness/conflict, medication advice, diagnostic/normality claims, urgent-language handling, companion-originated risky actions, and immediate kill control.
 
 ## Exit gate
 
-Users can see, correct and delete retained context; all captures are visible and scoped; no retrieved/visible/persona instruction changes policy; biometric and companion modes are independently revocable; prohibited inference, relationship-boundary and data-leakage suites pass.
+Users can see, correct and delete retained context; all captures/connectors are visible and scoped; no retrieved/visible/persona instruction changes policy; biometric, companion, coaching and wellness modes are independently revocable; prohibited inference, relationship, coaching-truthfulness, wellness-boundary and data-leakage suites pass.

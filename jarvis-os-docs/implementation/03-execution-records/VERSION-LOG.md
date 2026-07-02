@@ -75,3 +75,20 @@ Product, contracts, prompts, policy, migrations and agents version independently
 - Rollback steps: revert this design change; no runtime or stored data is affected.
 - Evaluation/test report: passed with 148 unique function rows, 5 new planned companion rows, 35 roadmap areas, matching dashboard totals, valid map structure/status and zero broken relative links.
 - Known issues: all five new functions and the consolidated roadmap remain planned.
+
+## VERSION-0.3.0-design — 2026-07-02
+
+| Domain | Old | New | Compatibility/migration |
+|---|---:|---:|---|
+| Product | companion/capability roadmap | developer coach and optional general-wellness design | additive; functions remain unimplemented |
+| Policy | companion/privacy baseline | coaching truthfulness, proactive limits, wellness/medication/urgent-language boundaries | existing permissions remain authoritative |
+| Prompts/agents | proposed companion prompts | proposed developer, learning, career and wellness coaching roles | documentation only; no runtime prompt deployed |
+| Database | no coach/wellness schema | unchanged | separate sensitive storage design required |
+
+- Global IDs changed: allocated planned `220000–220024`.
+- Added: developer profile/briefings, workflow help, learning plans/sessions/quizzes/challenges, reviews/projects/achievements/career coaching, wellness connectors/records/reminders/check-ins and safety filter.
+- Security/privacy changes: wellness data is separate sensitive data; cloud egress defaults off; no diagnosis, normality, treatment or medication-change advice.
+- Upgrade steps: none; planning documentation only.
+- Rollback steps: revert this design change.
+- Evaluation/test report: passed with 173 unique function rows, 25 new planned rows, matching dashboard totals, valid structure/status and zero broken relative links.
+- Known issues: all new functions remain planned; deployment-jurisdiction and connector-specific reviews are pending.

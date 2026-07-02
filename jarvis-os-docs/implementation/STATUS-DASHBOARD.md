@@ -17,7 +17,8 @@ Last updated: 2026-07-02
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
 | Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
-| **Total** | **148** | **137** | **0** | **0** | **11** |
+| Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
+| **Total** | **173** | **162** | **0** | **0** | **11** |
 
 Complete functions:
 
@@ -43,7 +44,7 @@ Complete functions:
 | 03 Desktop/transport | waiting | Stage 02 gate | not started |
 | 04 Continue project | waiting | Stage 03 gate | not started |
 | 05 Developer assistant | waiting | Stage 04 gate | not started |
-| 06 Context/voice/vision/Sriee | waiting | core safety/privacy gates | not started |
+| 06 Context/voice/vision/Sriee/coach | waiting | core safety/privacy and wellness-claims gates | not started |
 | 07 Hardening/release | waiting | selected feature gates | not started |
 
 ## Update rule

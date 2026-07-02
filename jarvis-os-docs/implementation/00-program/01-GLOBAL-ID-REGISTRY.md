@@ -13,7 +13,8 @@
 | 190000–190099 | Observability and operations | allocated | telemetry, health, packaging, recovery |
 | 200000–200099 | Plugin platform | allocated | manifest, signature, sandbox, lifecycle |
 | 210000–210099 | Sriee companion experience | allocated | persona, briefings, affectionate/romantic dialogue, stories, humor, contextual care |
-| 220000–229999 | Future first-party components | reserved | allocate via architecture review |
+| 220000–220099 | Developer coach and wellness | allocated | learning, project/career coaching, proactive workflow, general wellness |
+| 230000–239999 | Future first-party components | reserved | allocate via architecture review |
 
 ## Allocation rules
 
