@@ -17,7 +17,12 @@ from jarvis.tasks.api import router as task_router
 from jarvis.tasks.service import (
     TaskCreationService,
     TaskEventQueryService,
+    TaskControlService,
     TaskQueryService,
+)
+from jarvis.websocket.session import (
+    WebSocketSessionService,
+    router as websocket_router,
 )
 
 
@@ -30,6 +35,8 @@ def create_application(
     task_creation_service: TaskCreationService | None = None,
     task_query_service: TaskQueryService | None = None,
     task_event_query_service: TaskEventQueryService | None = None,
+    task_control_service: TaskControlService | None = None,
+    websocket_session_service: WebSocketSessionService | None = None,
 ) -> FastAPI:
     """Create an application with an explicit, testable runtime."""
 
@@ -51,5 +58,10 @@ def create_application(
         app.state.task_query_service = task_query_service
     if task_event_query_service is not None:
         app.state.task_event_query_service = task_event_query_service
+    if task_control_service is not None:
+        app.state.task_control_service = task_control_service
+    if websocket_session_service is not None:
+        app.state.websocket_session_service = websocket_session_service
     app.include_router(task_router)
+    app.include_router(websocket_router)
     return app

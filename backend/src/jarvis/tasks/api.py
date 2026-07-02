@@ -20,6 +20,9 @@ from jarvis.security.desktop_auth import (
 )
 from jarvis.tasks.models import (
     ArtifactReferenceResponse,
+    ApprovalDecisionRequest,
+    ApprovalDecisionResponse,
+    CancelTaskResponse,
     CreateTaskRequest,
     CreateTaskResponse,
     PendingApprovalResponse,
@@ -30,11 +33,18 @@ from jarvis.tasks.models import (
     TaskSnapshotResponse,
 )
 from jarvis.tasks.repository import IdempotencyConflictError
+from jarvis.tasks.repository import (
+    ApprovalConsumedError,
+    ApprovalDigestMismatchError,
+    ApprovalExpiredError,
+)
 from jarvis.tasks.service import (
     InvalidRequestIdentifierError,
     InvalidPaginationError,
+    ApprovalNotFoundError,
     TaskCreationService,
     TaskEventQueryService,
+    TaskControlService,
     TaskNotFoundError,
     TaskQueryService,
 )
@@ -69,6 +79,16 @@ def get_task_event_query_service(request: Request) -> TaskEventQueryService:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"code": "task_event_query_service_unavailable"},
+        )
+    return service
+
+
+def get_task_control_service(request: Request) -> TaskControlService:
+    service = getattr(request.app.state, "task_control_service", None)
+    if not isinstance(service, TaskControlService):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"code": "task_control_service_unavailable"},
         )
     return service
 
@@ -240,4 +260,110 @@ async def listTaskEvents(
         ),
         next_cursor=page.next_cursor,
         has_more=page.has_more,
+    )
+
+
+@router.post(
+    "/tasks/{task_id}/cancel",
+    response_model=CancelTaskResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def cancelTask(
+    task_id: str,
+    principal: Annotated[
+        AuthenticatedPrincipal,
+        Depends(authenticateDesktopSession),
+    ],
+    service: Annotated[
+        TaskControlService,
+        Depends(get_task_control_service),
+    ],
+    x_correlation_id: Annotated[str, Header(alias="X-Correlation-Id")],
+) -> CancelTaskResponse:
+    try:
+        outcome = await service.cancel(
+            task_id=task_id,
+            principal=principal,
+            correlation_id=x_correlation_id,
+        )
+    except TaskNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "task_not_found"},
+        ) from None
+    except InvalidRequestIdentifierError:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail={"code": "invalid_request_identifier"},
+        ) from None
+    return CancelTaskResponse(
+        task_id=outcome.task_id,
+        status=outcome.status,
+        cancellation_requested=outcome.cancellation_requested,
+        created=outcome.created,
+        event_sequence=(
+            outcome.event.sequence if outcome.event is not None else None
+        ),
+    )
+
+
+@router.post(
+    "/approvals/{approval_id}/decision",
+    response_model=ApprovalDecisionResponse,
+)
+async def decideApproval(
+    approval_id: str,
+    payload: ApprovalDecisionRequest,
+    principal: Annotated[
+        AuthenticatedPrincipal,
+        Depends(authenticateDesktopSession),
+    ],
+    service: Annotated[
+        TaskControlService,
+        Depends(get_task_control_service),
+    ],
+    x_correlation_id: Annotated[str, Header(alias="X-Correlation-Id")],
+) -> ApprovalDecisionResponse:
+    try:
+        outcome = await service.decide(
+            approval_id=approval_id,
+            request=payload,
+            principal=principal,
+            correlation_id=x_correlation_id,
+        )
+    except ApprovalNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "approval_not_found"},
+        ) from None
+    except InvalidRequestIdentifierError:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail={"code": "invalid_request_identifier"},
+        ) from None
+    except ApprovalExpiredError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={"code": "approval_expired"},
+        ) from None
+    except ApprovalConsumedError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={"code": "approval_consumed"},
+        ) from None
+    except ApprovalDigestMismatchError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={"code": "approval_digest_mismatch"},
+        ) from None
+    approval = outcome.approval
+    assert approval.decision is not None
+    assert approval.decided_at is not None
+    return ApprovalDecisionResponse(
+        approval_id=approval.approval_id,
+        task_id=approval.task_id,
+        action_id=approval.action_id,
+        decision=approval.decision,
+        decided_at=approval.decided_at,
+        event_sequence=outcome.event.sequence,
     )

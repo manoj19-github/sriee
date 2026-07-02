@@ -1,6 +1,9 @@
 """Task creation domain, application service, persistence contract, and API."""
 
 from jarvis.tasks.models import (
+    ApprovalDecisionRequest,
+    ApprovalDecisionResponse,
+    CancelTaskResponse,
     CreateTaskRequest,
     CreateTaskResponse,
     TaskSnapshotResponse,
@@ -20,6 +23,7 @@ from jarvis.tasks.service import (
     InMemoryOutboxNotifier,
     OutboxNotifier,
     TaskCreationService,
+    TaskControlService,
     TaskQueryService,
     TaskEventQueryService,
 )
@@ -27,11 +31,15 @@ from jarvis.tasks.service import (
 __all__ = [
     "CreateTaskRequest",
     "CreateTaskResponse",
+    "ApprovalDecisionRequest",
+    "ApprovalDecisionResponse",
+    "CancelTaskResponse",
     "IdempotencyConflictError",
     "InMemoryOutboxNotifier",
     "InMemoryTaskRepository",
     "OutboxNotifier",
     "TaskCreationService",
+    "TaskControlService",
     "TaskEventPageResponse",
     "TaskEventQueryRepository",
     "TaskEventQueryService",

@@ -18,6 +18,7 @@ class TaskInputType(StrEnum):
 class TaskStatus(StrEnum):
     CREATED = "created"
     PLANNING = "planning"
+    CANCELLATION_REQUESTED = "cancellation_requested"
     AWAITING_APPROVAL = "awaiting_approval"
     EXECUTING = "executing"
     VERIFYING = "verifying"
@@ -36,6 +37,17 @@ class TaskOutcome(StrEnum):
     CANCELLED = "cancelled"
     DENIED = "denied"
     EXPIRED = "expired"
+
+
+class ApprovalDecision(StrEnum):
+    APPROVE = "approve"
+    DENY = "deny"
+
+
+class ApprovalStatus(StrEnum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    DENIED = "denied"
 
 
 class TaskInput(BaseModel):
@@ -135,6 +147,34 @@ class TaskEventPageResponse(BaseModel):
     has_more: bool
 
 
+class CancelTaskResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    task_id: str
+    status: TaskStatus
+    cancellation_requested: bool
+    created: bool
+    event_sequence: int | None
+
+
+class ApprovalDecisionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    decision: ApprovalDecision
+    action_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ApprovalDecisionResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    approval_id: str
+    task_id: str
+    action_id: str
+    decision: ApprovalDecision
+    decided_at: datetime
+    event_sequence: int
+
+
 @dataclass(frozen=True, slots=True)
 class TaskRecord:
     task_id: str
@@ -228,3 +268,34 @@ class TaskEventPageRecord:
     events: tuple[TaskEvent, ...]
     next_cursor: int
     has_more: bool
+
+
+@dataclass(frozen=True, slots=True)
+class TaskCancellationOutcome:
+    task_id: str
+    status: TaskStatus
+    cancellation_requested: bool
+    created: bool
+    event: TaskEvent | None
+    outbox: OutboxRecord | None
+
+
+@dataclass(frozen=True, slots=True)
+class ApprovalRecord:
+    approval_id: str
+    task_id: str
+    actor_id: str
+    device_id: str
+    action_id: str
+    action_digest: str
+    status: ApprovalStatus
+    expires_at: datetime
+    decided_at: datetime | None = None
+    decision: ApprovalDecision | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class ApprovalDecisionOutcome:
+    approval: ApprovalRecord
+    event: TaskEvent
+    outbox: OutboxRecord

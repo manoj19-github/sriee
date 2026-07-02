@@ -145,3 +145,11 @@ Response:
 Events are strictly ascending and include only sequences greater than `after_sequence`. `next_cursor` is the last returned sequence, or the supplied cursor when no events remain. Clients reconnecting after WebSocket loss repeatedly request pages until `has_more=false`.
 
 Malformed IDs, unknown tasks and ownership mismatch return the same `404 task_not_found`. Invalid cursor/limit values return 422. Reads never mutate task, event or outbox state.
+
+## Cancel task v1
+
+`POST /api/v1/tasks/{task_id}/cancel` requires task ownership and `X-Correlation-Id`. It returns 202 after durable cancellation intent is recorded. `status=cancellation_requested` is not a claim that execution has stopped. Replays return `created=false`; terminal tasks remain terminal without a new event/outbox.
+
+## Decide approval v1
+
+`POST /api/v1/approvals/{approval_id}/decision` requires ownership, `X-Correlation-Id`, `decision` (`approve` or `deny`) and the exact lowercase 64-character action digest. Unknown/unauthorized approvals return 404. Expired, consumed or mismatched approvals return distinct 409 codes. The action payload is never accepted or returned by this endpoint.

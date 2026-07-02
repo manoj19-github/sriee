@@ -13,6 +13,10 @@ from uuid import uuid4
 
 from jarvis.security.desktop_auth import AuthenticatedPrincipal
 from jarvis.tasks.models import (
+    ApprovalDecision,
+    ApprovalDecisionOutcome,
+    ApprovalDecisionRequest,
+    TaskCancellationOutcome,
     CreateTaskRequest,
     OutboxRecord,
     TaskCreationBundle,
@@ -24,6 +28,10 @@ from jarvis.tasks.models import (
     TaskStatus,
 )
 from jarvis.tasks.repository import (
+    ApprovalConsumedError,
+    ApprovalDigestMismatchError,
+    ApprovalExpiredError,
+    TaskControlRepository,
     TaskEventQueryRepository,
     TaskQueryRepository,
     TaskRepository,
@@ -50,6 +58,11 @@ class OutboxNotifier(Protocol):
         """Wake the dispatcher after a durable outbox record is committed."""
 
 
+class TaskEventPublisher(Protocol):
+    async def publish(self, event: TaskEvent) -> None:
+        """Publish a committed event to live subscribers."""
+
+
 class InMemoryOutboxNotifier:
     def __init__(self, *, fail: bool = False) -> None:
         self.task_ids: list[str] = []
@@ -67,10 +80,12 @@ class TaskCreationService:
         repository: TaskRepository,
         notifier: OutboxNotifier,
         *,
+        event_publisher: TaskEventPublisher | None = None,
         clock: Callable[[], datetime] | None = None,
     ) -> None:
         self._repository = repository
         self._notifier = notifier
+        self._event_publisher = event_publisher
         self._clock = clock or (lambda: datetime.now(UTC))
 
     async def create(
@@ -131,6 +146,11 @@ class TaskCreationService:
             TaskCreationBundle(task=task, event=event, outbox=outbox)
         )
         if outcome.created:
+            if self._event_publisher is not None:
+                try:
+                    await self._event_publisher.publish(outcome.event)
+                except Exception:
+                    pass
             try:
                 await self._notifier.notify(outcome.task.task_id)
             except Exception:
@@ -215,3 +235,92 @@ class TaskEventQueryService:
         if page is None:
             raise TaskNotFoundError
         return page
+
+
+class ApprovalNotFoundError(LookupError):
+    pass
+
+
+class TaskControlService:
+    """Persist task cancellation and approval control intents before wake-up."""
+
+    def __init__(
+        self,
+        repository: TaskControlRepository,
+        notifier: OutboxNotifier,
+        *,
+        event_publisher: TaskEventPublisher | None = None,
+        clock: Callable[[], datetime] | None = None,
+    ) -> None:
+        self._repository = repository
+        self._notifier = notifier
+        self._event_publisher = event_publisher
+        self._clock = clock or (lambda: datetime.now(UTC))
+
+    async def cancel(
+        self,
+        *,
+        task_id: str,
+        principal: AuthenticatedPrincipal,
+        correlation_id: str,
+    ) -> TaskCancellationOutcome:
+        if not re.fullmatch(r"tsk_[0-9a-f]{32}", task_id):
+            raise TaskNotFoundError
+        safe_correlation_id = TaskCreationService._validate_identifier(
+            correlation_id
+        )
+        outcome = await self._repository.request_cancellation(
+            task_id=task_id,
+            actor_id=principal.actor_id,
+            device_id=principal.device_id,
+            correlation_id=safe_correlation_id,
+            occurred_at=self._clock(),
+        )
+        if outcome is None:
+            raise TaskNotFoundError
+        if outcome.created:
+            if self._event_publisher is not None and outcome.event is not None:
+                try:
+                    await self._event_publisher.publish(outcome.event)
+                except Exception:
+                    pass
+            try:
+                await self._notifier.notify(task_id)
+            except Exception:
+                pass
+        return outcome
+
+    async def decide(
+        self,
+        *,
+        approval_id: str,
+        request: ApprovalDecisionRequest,
+        principal: AuthenticatedPrincipal,
+        correlation_id: str,
+    ) -> ApprovalDecisionOutcome:
+        if not re.fullmatch(r"apr_[A-Za-z0-9_-]{8,128}", approval_id):
+            raise ApprovalNotFoundError
+        safe_correlation_id = TaskCreationService._validate_identifier(
+            correlation_id
+        )
+        outcome = await self._repository.decide_approval(
+            approval_id=approval_id,
+            actor_id=principal.actor_id,
+            device_id=principal.device_id,
+            action_digest=request.action_digest,
+            decision=request.decision,
+            correlation_id=safe_correlation_id,
+            decided_at=self._clock(),
+        )
+        if outcome is None:
+            raise ApprovalNotFoundError
+        if self._event_publisher is not None:
+            try:
+                await self._event_publisher.publish(outcome.event)
+            except Exception:
+                pass
+        try:
+            await self._notifier.notify(outcome.approval.task_id)
+        except Exception:
+            pass
+        return outcome

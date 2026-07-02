@@ -23,3 +23,15 @@ Server messages: `welcome`, `task.event`, `action.request`, `resync.required`, `
 On reconnect, client sends last durable sequence and fetches gaps. Messages may duplicate; IDs and action idempotency make consumers safe. Acknowledgement means receipt, not execution. Action results include attempt/receipt IDs. Heartbeats detect stale connections; exponential backoff has jitter and a cap.
 
 Unknown major versions close with a protocol error. Invalid, oversized, unauthorized, or rate-limited frames are rejected and audited. Approval frames repeat the action digest and are processed through the same REST use case.
+
+## Implemented desktop session v1
+
+Endpoint: `/api/v1/ws`.
+
+Handshake headers: desktop authentication headers plus `X-Protocol-Version: 1.0`. Authentication occurs before acceptance. Welcome includes connection ID, negotiated contract, subscription limit and frame-size limit.
+
+Implemented client frames: `ping`, `task.subscribe`, `task.unsubscribe`.
+
+Implemented server frames: `welcome`, `pong`, `task.event`, `task.subscribed`, `task.unsubscribed`, `resync.required`, `error`.
+
+Subscriptions first replay durable pages from the exclusive cursor, then receive bounded live events. Duplicate live sequences are ignored. A gap or queue overflow removes the affected subscription and emits `resync.required`; the client resumes through `GET /api/v1/tasks/{task_id}/events`.

@@ -6,7 +6,7 @@ Last updated: 2026-07-02
 
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
-| FastAPI platform | 12 | 6 | 0 | 0 | 6 |
+| FastAPI platform | 12 | 2 | 0 | 0 | 10 |
 | LangGraph brain | 14 | 14 | 0 | 0 | 0 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
@@ -16,7 +16,7 @@ Last updated: 2026-07-02
 | Voice and vision | 11 | 11 | 0 | 0 | 0 |
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
-| **Total** | **125** | **118** | **0** | **0** | **7** |
+| **Total** | **125** | **114** | **0** | **0** | **11** |
 
 Complete functions:
 
@@ -26,6 +26,10 @@ Complete functions:
 - `110003` — authenticated, idempotent task creation with atomic task/event/outbox contract.
 - `110004` — actor/device-authorized task projection with privacy-safe result references.
 - `110005` — authorized, stable cursor pagination for durable task-event recovery.
+- `110006` — idempotent cancellation intent with terminal-state preservation.
+- `110007` — digest-bound, expiring, single-use approval decision.
+- `110008` — authenticated, negotiated and bounded WebSocket session.
+- `110009` — durable replay plus bounded at-least-once live task-event streaming.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
 ## Stage status
