@@ -47,3 +47,16 @@ Transient read failures retry with jitter. Side-effect retry requires idempotenc
 ## Evaluation hooks
 
 Capture intent correctness, plan validity, unnecessary actions, policy agreement, tool selection, verification quality, latency, cost, and user correction. Store sanitized datasets separately from production personal memory.
+
+## Implemented graph construction v1
+
+`buildJarvisGraph` compiles a fixed thirteen-node topology from an exact node registry.
+The registry, state schema, append reducers, graph/state versions and checkpointer
+binding are validated before LangGraph compilation. Policy, approval and verification
+branches route only from explicit workflow status values; an unknown value fails
+closed with a safe contract code.
+
+Construction attaches an injected saver that the trusted composition root marks
+durable, but does not open a database connection or invoke any node. The production
+PostgreSQL saver and checkpoint migrations remain separate work under Global ID
+`140004`.

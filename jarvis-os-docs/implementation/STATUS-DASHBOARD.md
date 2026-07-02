@@ -7,7 +7,7 @@ Last updated: 2026-07-03
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 14 | 14 | 0 | 0 | 0 |
+| LangGraph brain | 14 | 13 | 0 | 0 | 1 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
@@ -18,7 +18,7 @@ Last updated: 2026-07-03
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
 | Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
-| **Total** | **173** | **160** | **0** | **0** | **13** |
+| **Total** | **173** | **159** | **0** | **0** | **14** |
 
 Complete functions:
 
@@ -34,6 +34,7 @@ Complete functions:
 - `110009` — durable replay plus bounded at-least-once live task-event streaming.
 - `110010` — separate process liveness and bounded, sanitized dependency readiness.
 - `110011` — stable, correlated and secret-safe API/WebSocket error mapping.
+- `120000` — versioned, deterministic LangGraph topology construction and contract validation.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
 ## Stage status
