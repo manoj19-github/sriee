@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import re
 from collections.abc import Callable
@@ -17,10 +18,11 @@ from jarvis.tasks.models import (
     TaskCreationBundle,
     TaskCreationOutcome,
     TaskEvent,
+    TaskProjectionRecord,
     TaskRecord,
     TaskStatus,
 )
-from jarvis.tasks.repository import TaskRepository
+from jarvis.tasks.repository import TaskQueryRepository, TaskRepository
 
 
 SAFE_REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$")
@@ -28,6 +30,10 @@ SAFE_REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$")
 
 class InvalidRequestIdentifierError(ValueError):
     """An idempotency or correlation identifier is unsafe or malformed."""
+
+
+class TaskNotFoundError(LookupError):
+    """Unknown and unauthorized tasks intentionally share one failure."""
 
 
 class OutboxNotifier(Protocol):
@@ -145,3 +151,28 @@ class TaskCreationService:
             sort_keys=True,
         ).encode("utf-8")
         return hashlib.sha256(canonical).hexdigest()
+
+
+class TaskQueryService:
+    """Return only an actor/device-authorized task projection."""
+
+    def __init__(self, repository: TaskQueryRepository) -> None:
+        self._repository = repository
+
+    async def get(
+        self,
+        *,
+        task_id: str,
+        principal: AuthenticatedPrincipal,
+    ) -> TaskProjectionRecord:
+        if not re.fullmatch(r"tsk_[0-9a-f]{32}", task_id):
+            raise TaskNotFoundError
+        projection = await self._repository.get_projection(task_id)
+        if projection is None:
+            raise TaskNotFoundError
+        if not (
+            hmac.compare_digest(projection.actor_id, principal.actor_id)
+            and hmac.compare_digest(projection.device_id, principal.device_id)
+        ):
+            raise TaskNotFoundError
+        return projection

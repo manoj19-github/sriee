@@ -70,3 +70,40 @@ Accepted response (`202`):
 ```
 
 An identical idempotent replay returns the original task with `created=false`. Reusing the same actor/device/key scope for a different input type, content, or negotiated contract returns `409 idempotency_key_conflict`.
+
+## Get task v1
+
+`GET /api/v1/tasks/{task_id}` requires the authenticated actor and device that own the task. Malformed IDs, unknown tasks and ownership mismatch all return the same `404 task_not_found` response.
+
+Response:
+
+```json
+{
+  "task_id": "tsk_...",
+  "status": "awaiting_approval",
+  "plan": {
+    "revision": 3,
+    "status": "validated"
+  },
+  "pending_approval": {
+    "approval_id": "apr_...",
+    "action_id": "act_...",
+    "risk_tier": "R2",
+    "expires_at": "2026-07-02T12:02:00Z"
+  },
+  "result": null,
+  "created_at": "2026-07-02T12:00:00Z",
+  "updated_at": "2026-07-02T12:00:05Z"
+}
+```
+
+Result snapshots may contain an outcome, bounded summary and opaque artifact references. Artifact content, path, URL and download access are never embedded:
+
+```json
+{
+  "reference_id": "art_...",
+  "requires_separate_authorization": true
+}
+```
+
+The response omits task input, actor/device identity, idempotency keys, request hashes and internal event/outbox data.

@@ -10,11 +10,21 @@ from jarvis.security.desktop_auth import (
     AuthenticatedPrincipal,
     authenticateDesktopSession,
 )
-from jarvis.tasks.models import CreateTaskRequest, CreateTaskResponse
+from jarvis.tasks.models import (
+    ArtifactReferenceResponse,
+    CreateTaskRequest,
+    CreateTaskResponse,
+    PendingApprovalResponse,
+    PlanSnapshotResponse,
+    TaskResultResponse,
+    TaskSnapshotResponse,
+)
 from jarvis.tasks.repository import IdempotencyConflictError
 from jarvis.tasks.service import (
     InvalidRequestIdentifierError,
     TaskCreationService,
+    TaskNotFoundError,
+    TaskQueryService,
 )
 
 
@@ -27,6 +37,16 @@ def get_task_creation_service(request: Request) -> TaskCreationService:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"code": "task_service_unavailable"},
+        )
+    return service
+
+
+def get_task_query_service(request: Request) -> TaskQueryService:
+    service = getattr(request.app.state, "task_query_service", None)
+    if not isinstance(service, TaskQueryService):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"code": "task_query_service_unavailable"},
         )
     return service
 
@@ -75,4 +95,70 @@ async def createTask(
         created=outcome.created,
         event_sequence=outcome.event.sequence,
         accepted_at=outcome.task.created_at,
+    )
+
+
+@router.get(
+    "/tasks/{task_id}",
+    response_model=TaskSnapshotResponse,
+)
+async def getTask(
+    task_id: str,
+    principal: Annotated[
+        AuthenticatedPrincipal,
+        Depends(authenticateDesktopSession),
+    ],
+    service: Annotated[
+        TaskQueryService,
+        Depends(get_task_query_service),
+    ],
+) -> TaskSnapshotResponse:
+    """Return a minimal authorized projection without personal artifact data."""
+
+    try:
+        projection = await service.get(task_id=task_id, principal=principal)
+    except TaskNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "task_not_found"},
+        ) from None
+
+    plan = (
+        PlanSnapshotResponse(
+            revision=projection.plan.revision,
+            status=projection.plan.status,
+        )
+        if projection.plan is not None
+        else None
+    )
+    pending_approval = (
+        PendingApprovalResponse(
+            approval_id=projection.pending_approval.approval_id,
+            action_id=projection.pending_approval.action_id,
+            risk_tier=projection.pending_approval.risk_tier,
+            expires_at=projection.pending_approval.expires_at,
+        )
+        if projection.pending_approval is not None
+        else None
+    )
+    result = (
+        TaskResultResponse(
+            outcome=projection.result.outcome,
+            summary=projection.result.summary,
+            artifact_references=tuple(
+                ArtifactReferenceResponse(reference_id=reference_id)
+                for reference_id in projection.result.artifact_reference_ids
+            ),
+        )
+        if projection.result is not None
+        else None
+    )
+    return TaskSnapshotResponse(
+        task_id=projection.task_id,
+        status=projection.status,
+        plan=plan,
+        pending_approval=pending_approval,
+        result=result,
+        created_at=projection.created_at,
+        updated_at=projection.updated_at,
     )

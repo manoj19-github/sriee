@@ -17,6 +17,25 @@ class TaskInputType(StrEnum):
 
 class TaskStatus(StrEnum):
     CREATED = "created"
+    PLANNING = "planning"
+    AWAITING_APPROVAL = "awaiting_approval"
+    EXECUTING = "executing"
+    VERIFYING = "verifying"
+    SUCCEEDED = "succeeded"
+    PARTIALLY_SUCCEEDED = "partially_succeeded"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    DENIED = "denied"
+    EXPIRED = "expired"
+
+
+class TaskOutcome(StrEnum):
+    SUCCEEDED = "succeeded"
+    PARTIALLY_SUCCEEDED = "partially_succeeded"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+    DENIED = "denied"
+    EXPIRED = "expired"
 
 
 class TaskInput(BaseModel):
@@ -49,6 +68,49 @@ class CreateTaskResponse(BaseModel):
     created: bool
     event_sequence: int
     accepted_at: datetime
+
+
+class PlanSnapshotResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    revision: int = Field(ge=1)
+    status: str = Field(min_length=1, max_length=64)
+
+
+class PendingApprovalResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    approval_id: str = Field(pattern=r"^apr_[A-Za-z0-9_-]{8,128}$")
+    action_id: str = Field(pattern=r"^act_[A-Za-z0-9_-]{8,128}$")
+    risk_tier: str = Field(pattern=r"^R[0-4]$")
+    expires_at: datetime
+
+
+class ArtifactReferenceResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    reference_id: str = Field(pattern=r"^art_[A-Za-z0-9_-]{8,128}$")
+    requires_separate_authorization: bool = True
+
+
+class TaskResultResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    outcome: TaskOutcome
+    summary: str = Field(min_length=1, max_length=2_000)
+    artifact_references: tuple[ArtifactReferenceResponse, ...] = ()
+
+
+class TaskSnapshotResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    task_id: str
+    status: TaskStatus
+    plan: PlanSnapshotResponse | None
+    pending_approval: PendingApprovalResponse | None
+    result: TaskResultResponse | None
+    created_at: datetime
+    updated_at: datetime
 
 
 @dataclass(frozen=True, slots=True)
@@ -102,3 +164,37 @@ class TaskCreationOutcome:
     event: TaskEvent
     outbox: OutboxRecord
     created: bool
+
+
+@dataclass(frozen=True, slots=True)
+class PlanProjection:
+    revision: int
+    status: str
+
+
+@dataclass(frozen=True, slots=True)
+class PendingApprovalProjection:
+    approval_id: str
+    action_id: str
+    risk_tier: str
+    expires_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class TaskResultProjection:
+    outcome: TaskOutcome
+    summary: str
+    artifact_reference_ids: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class TaskProjectionRecord:
+    task_id: str
+    actor_id: str
+    device_id: str
+    status: TaskStatus
+    plan: PlanProjection | None
+    pending_approval: PendingApprovalProjection | None
+    result: TaskResultProjection | None
+    created_at: datetime
+    updated_at: datetime

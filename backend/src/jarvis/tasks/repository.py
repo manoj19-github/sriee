@@ -11,6 +11,7 @@ from jarvis.tasks.models import (
     TaskCreationBundle,
     TaskCreationOutcome,
     TaskEvent,
+    TaskProjectionRecord,
     TaskRecord,
 )
 
@@ -27,6 +28,11 @@ class TaskRepository(Protocol):
         """Atomically create task/event/outbox or return the matching task."""
 
 
+class TaskQueryRepository(Protocol):
+    async def get_projection(self, task_id: str) -> TaskProjectionRecord | None:
+        """Return the current task projection."""
+
+
 class InMemoryTaskRepository:
     """Concurrency-safe development/test implementation of the atomic contract."""
 
@@ -37,6 +43,7 @@ class InMemoryTaskRepository:
             TaskCreationOutcome,
         ] = {}
         self._tasks: dict[str, TaskRecord] = {}
+        self._projections: dict[str, TaskProjectionRecord] = {}
         self._events: list[TaskEvent] = []
         self._outbox: list[OutboxRecord] = []
 
@@ -63,10 +70,40 @@ class InMemoryTaskRepository:
                 created=True,
             )
             self._tasks[bundle.task.task_id] = bundle.task
+            self._projections[bundle.task.task_id] = TaskProjectionRecord(
+                task_id=bundle.task.task_id,
+                actor_id=bundle.task.actor_id,
+                device_id=bundle.task.device_id,
+                status=bundle.task.status,
+                plan=None,
+                pending_approval=None,
+                result=None,
+                created_at=bundle.task.created_at,
+                updated_at=bundle.task.created_at,
+            )
             self._events.append(bundle.event)
             self._outbox.append(bundle.outbox)
             self._by_idempotency[scope] = outcome
             return outcome
+
+    async def get_projection(self, task_id: str) -> TaskProjectionRecord | None:
+        async with self._lock:
+            return self._projections.get(task_id)
+
+    async def replace_projection(self, projection: TaskProjectionRecord) -> None:
+        """Replace a projection in development/tests after its task exists."""
+
+        async with self._lock:
+            if projection.task_id not in self._tasks:
+                raise KeyError("task does not exist")
+            current = self._projections[projection.task_id]
+            if (
+                current.actor_id != projection.actor_id
+                or current.device_id != projection.device_id
+                or current.created_at != projection.created_at
+            ):
+                raise ValueError("projection identity is immutable")
+            self._projections[projection.task_id] = projection
 
     async def snapshot(
         self,
