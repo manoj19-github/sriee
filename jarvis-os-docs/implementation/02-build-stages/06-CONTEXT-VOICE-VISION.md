@@ -1,4 +1,4 @@
-# Stage 06 — Memory, RAG, Voice, and Vision
+# Stage 06 — Memory, RAG, Voice, Vision, and Sriee
 
 ## Dependencies
 
@@ -6,7 +6,7 @@ Core task safety and privacy center are stable. Each feature launches independen
 
 ## Functions
 
-140006–140013 and 180000–180010.
+140006–140012, 180000–180016, and 210000–210011.
 
 ## Steps
 
@@ -21,11 +21,19 @@ Core task safety and privacy center are stable. Each feature launches independen
 9. Add push-to-talk, visible audio session, local-first STT and transcript confirmation.
 10. Add wake word only after false-activation/privacy evaluation.
 11. Add TTS with interruption and wake-feedback suppression.
+12. Add the versioned Sriee profile, high-quality female voice selection, relationship boundaries and quiet hours.
+13. Add visible camera sessions and local non-identifying presence detection.
+14. Add optional encrypted local face enrollment/matching only after liveness, deletion and false-match gates pass.
+15. Add the source-attributed morning briefing with cooldown and partial-failure behavior.
+16. Add visible-expression cues that abstain or use uncertain observational wording, never emotion labels.
+17. Add consented companion preferences/routines and capped contextual care suggestions.
+18. Route every accepted companion action through the standard task, policy, approval and executor pipeline.
+19. Add Stop Sriee, sensor revocation and persona manipulation/dependency red-team tests.
 
 ## Required tests
 
-Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript and immediate kill control.
+Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, companion-originated risky actions, and immediate kill control.
 
 ## Exit gate
 
-Users can see, correct and delete retained context; all captures are visible and scoped; no retrieved/visible instruction changes policy; prohibited inference and data leakage suites pass.
+Users can see, correct and delete retained context; all captures are visible and scoped; no retrieved/visible/persona instruction changes policy; biometric and companion modes are independently revocable; prohibited inference, relationship-boundary and data-leakage suites pass.

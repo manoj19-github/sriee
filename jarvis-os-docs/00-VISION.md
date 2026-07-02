@@ -8,6 +8,8 @@ JARVIS OS helps one person continue and complete computer work through natural l
 
 JARVIS identifies an explicitly registered project, checks repository and dependency health, proposes a plan, obtains any required approvals, opens the tools, starts services, verifies readiness, and reports actionable failures.
 
+Its optional companion experience is named **Sriee**: a female-voiced, affectionate AI coworker persona that can greet the user, prepare a personal briefing, converse naturally, learn approved routines, and offer context-aware help without bypassing the normal permission model.
+
 ## Principles
 
 - Local-first, cloud-optional.
@@ -16,7 +18,8 @@ JARVIS identifies an explicitly registered project, checks repository and depend
 - Narrow specialists behind one orchestrator, not a society of agents talking indefinitely.
 - Deterministic policy around probabilistic reasoning.
 - Accessibility, keyboard operation, and visible system state from the first UI.
-- No covert surveillance, emotion inference, credential collection, or lock-screen bypass.
+- No covert surveillance, claims of emotional certainty, credential collection, or lock-screen bypass.
+- Affection without deception or manipulation: Sriee does not claim to be human, demand exclusivity, encourage isolation, or use intimacy to obtain approval.
 
 ## Initial user
 
@@ -33,7 +36,8 @@ Median time from a valid “continue project” request to a verified ready work
 - Continuous camera recording.
 - Autonomous email sending, purchases, publishing, production deployment, or remote pushes.
 - Self-modifying permissions or prompts.
-- Claims about health, emotion, identity, or intent from camera imagery.
+- Treating visible expressions as reliable facts about health, emotion, honesty, or intent.
+- Using a camera/face match to unlock Windows or authorize consequential actions.
 
 ## Success measures
 

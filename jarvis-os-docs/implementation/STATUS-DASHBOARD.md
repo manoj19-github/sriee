@@ -13,10 +13,11 @@ Last updated: 2026-07-02
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
 | Windows executor | 14 | 14 | 0 | 0 | 0 |
 | Developer integrations | 14 | 14 | 0 | 0 | 0 |
-| Voice and vision | 11 | 11 | 0 | 0 | 0 |
+| Voice and vision | 17 | 17 | 0 | 0 | 0 |
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
-| **Total** | **125** | **114** | **0** | **0** | **11** |
+| Sriee companion experience | 12 | 12 | 0 | 0 | 0 |
+| **Total** | **143** | **132** | **0** | **0** | **11** |
 
 Complete functions:
 
@@ -42,7 +43,7 @@ Complete functions:
 | 03 Desktop/transport | waiting | Stage 02 gate | not started |
 | 04 Continue project | waiting | Stage 03 gate | not started |
 | 05 Developer assistant | waiting | Stage 04 gate | not started |
-| 06 Context/voice/vision | waiting | core safety/privacy gates | not started |
+| 06 Context/voice/vision/Sriee | waiting | core safety/privacy gates | not started |
 | 07 Hardening/release | waiting | selected feature gates | not started |
 
 ## Update rule

@@ -47,11 +47,11 @@ Add scoped patching, terminal specifications, Git mutations, Docker lifecycle, t
 
 Gate: no work escapes project roots or mutates remotes without exact approval.
 
-## Stage 06 — Context
+## Stage 06 — Context and Sriee companion
 
-Add consented memory, project RAG, request-scoped UIA/OCR, and opt-in voice.
+Add consented memory, project RAG, request-scoped UIA/OCR, opt-in voice/camera, local face enrollment, and the Sriee companion experience. Deliver sensors independently before combining them into presence-triggered routines.
 
-Gate: ACL, deletion, prompt-injection, recording indicator, and privacy tests pass.
+Gate: ACL, deletion, prompt-injection, recording indicator, biometric-template protection, false-recognition, expression-uncertainty, persona-boundary, immediate sensor kill, and privacy tests pass.
 
 ## Stage 07 — Release
 

@@ -7,9 +7,10 @@ This handbook turns the architecture documents into a controlled build sequence.
 1. [Documentation rules](00-program/00-DOCUMENTATION-RULES.md)
 2. [Global ID registry](00-program/01-GLOBAL-ID-REGISTRY.md)
 3. [Delivery sequence](00-program/02-DELIVERY-SEQUENCE.md)
-4. Read the function map for the component being changed.
-5. Execute the matching build-stage guide.
-6. Append coding, testing, deep-dive, and version records.
+4. [Sriee companion program](00-program/03-SRIEE-COMPANION-PROGRAM.md)
+5. Read the function map for the component being changed.
+6. Execute the matching build-stage guide.
+7. Append coding, testing, deep-dive, and version records.
 
 Current truth: [Status dashboard](STATUS-DASHBOARD.md).
 
@@ -42,6 +43,7 @@ Program-level and historical records:
 | 180000–180099 | Voice and vision | [voice-vision](01-function-maps/180-VOICE-VISION.md) |
 | 190000–190099 | Observability and operations | [operations](01-function-maps/190-OBSERVABILITY-OPERATIONS.md) |
 | 200000–200099 | Plugin platform | [plugin-platform](01-function-maps/200-PLUGIN-PLATFORM.md) |
+| 210000–210099 | Sriee companion experience | [sriee-companion](01-function-maps/210-SRIEE-COMPANION.md) |
 
 ## Build stages
 
@@ -55,7 +57,7 @@ Stages are executed in numeric order. A later stage may be explored, but impleme
 | 03 | WPF desktop and secure transport |
 | 04 | First “continue project” vertical slice |
 | 05 | Coding, Git, terminal, and Docker assistance |
-| 06 | Memory, RAG, voice, and vision context |
+| 06 | Memory, RAG, voice, vision, and Sriee companion context |
 | 07 | Plugins, hardening, packaging, and release |
 
 ## Status truth

@@ -12,6 +12,14 @@
 | R3 external/system | push, send, install, settings | per-action ask |
 | R4 prohibited | bypass security, steal credentials | deny |
 
+## Sensors and companion mode
+
+Camera, microphone, screen capture and biometric enrollment are separate capabilities; enabling Sriee companion mode grants none of them automatically. Each grant declares device, purpose, activation mode, foreground/ambient scope, retention, provider egress, expiry and indicator behavior.
+
+The permission center provides one-action mute, camera off and **Stop Sriee** controls. Stop ends active capture/playback and proactive routines immediately; optional revoke also removes eligible remembered sensor grants. OS privacy controls and hardware shutters cannot be overridden.
+
+Broad machine assistance is composed from narrow capabilities rather than a “full control” grant. Companion-originated actions use the same risk tier, preview, approval digest, cancellation, verification and audit rules as requests from the normal task UI.
+
 ## Approval object
 
 Contains approval ID, actor/device IDs, action digest, human-readable preview, exact resource scope, policy version, issued/expiry times, nonce, decision, and authenticator evidence. Any action change invalidates approval. “Approve all” cannot cover R3.
