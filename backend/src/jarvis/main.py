@@ -14,7 +14,11 @@ from jarvis.runtime.lifecycle import (
 )
 from jarvis.security.desktop_auth import DesktopSessionAuthenticator
 from jarvis.tasks.api import router as task_router
-from jarvis.tasks.service import TaskCreationService, TaskQueryService
+from jarvis.tasks.service import (
+    TaskCreationService,
+    TaskEventQueryService,
+    TaskQueryService,
+)
 
 
 def create_application(
@@ -25,6 +29,7 @@ def create_application(
     desktop_authenticator: DesktopSessionAuthenticator | None = None,
     task_creation_service: TaskCreationService | None = None,
     task_query_service: TaskQueryService | None = None,
+    task_event_query_service: TaskEventQueryService | None = None,
 ) -> FastAPI:
     """Create an application with an explicit, testable runtime."""
 
@@ -44,5 +49,7 @@ def create_application(
         app.state.task_creation_service = task_creation_service
     if task_query_service is not None:
         app.state.task_query_service = task_query_service
+    if task_event_query_service is not None:
+        app.state.task_event_query_service = task_event_query_service
     app.include_router(task_router)
     return app

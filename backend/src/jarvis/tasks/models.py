@@ -113,6 +113,28 @@ class TaskSnapshotResponse(BaseModel):
     updated_at: datetime
 
 
+class TaskEventResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    event_id: str = Field(pattern=r"^evt_[A-Za-z0-9_-]{8,128}$")
+    task_id: str
+    sequence: int = Field(ge=1)
+    type: str = Field(min_length=1, max_length=128)
+    schema_version: str = Field(min_length=1, max_length=32)
+    occurred_at: datetime
+    correlation_id: str
+    data: dict[str, Any]
+
+
+class TaskEventPageResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    task_id: str
+    events: tuple[TaskEventResponse, ...]
+    next_cursor: int = Field(ge=0)
+    has_more: bool
+
+
 @dataclass(frozen=True, slots=True)
 class TaskRecord:
     task_id: str
@@ -198,3 +220,11 @@ class TaskProjectionRecord:
     result: TaskResultProjection | None
     created_at: datetime
     updated_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class TaskEventPageRecord:
+    task_id: str
+    events: tuple[TaskEvent, ...]
+    next_cursor: int
+    has_more: bool

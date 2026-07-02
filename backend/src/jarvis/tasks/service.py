@@ -18,11 +18,16 @@ from jarvis.tasks.models import (
     TaskCreationBundle,
     TaskCreationOutcome,
     TaskEvent,
+    TaskEventPageRecord,
     TaskProjectionRecord,
     TaskRecord,
     TaskStatus,
 )
-from jarvis.tasks.repository import TaskQueryRepository, TaskRepository
+from jarvis.tasks.repository import (
+    TaskEventQueryRepository,
+    TaskQueryRepository,
+    TaskRepository,
+)
 
 
 SAFE_REQUEST_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$")
@@ -34,6 +39,10 @@ class InvalidRequestIdentifierError(ValueError):
 
 class TaskNotFoundError(LookupError):
     """Unknown and unauthorized tasks intentionally share one failure."""
+
+
+class InvalidPaginationError(ValueError):
+    """Cursor or page size is outside the event query contract."""
 
 
 class OutboxNotifier(Protocol):
@@ -176,3 +185,33 @@ class TaskQueryService:
         ):
             raise TaskNotFoundError
         return projection
+
+
+class TaskEventQueryService:
+    """Return stable actor/device-authorized event pages."""
+
+    def __init__(self, repository: TaskEventQueryRepository) -> None:
+        self._repository = repository
+
+    async def list(
+        self,
+        *,
+        task_id: str,
+        principal: AuthenticatedPrincipal,
+        after_sequence: int,
+        limit: int,
+    ) -> TaskEventPageRecord:
+        if not re.fullmatch(r"tsk_[0-9a-f]{32}", task_id):
+            raise TaskNotFoundError
+        if after_sequence < 0 or not 1 <= limit <= 100:
+            raise InvalidPaginationError
+        page = await self._repository.list_authorized_events(
+            task_id=task_id,
+            actor_id=principal.actor_id,
+            device_id=principal.device_id,
+            after_sequence=after_sequence,
+            limit=limit,
+        )
+        if page is None:
+            raise TaskNotFoundError
+        return page

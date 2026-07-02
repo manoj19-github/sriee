@@ -4,6 +4,7 @@ from jarvis.tasks.models import (
     CreateTaskRequest,
     CreateTaskResponse,
     TaskSnapshotResponse,
+    TaskEventPageResponse,
     TaskInput,
     TaskInputType,
     TaskStatus,
@@ -13,12 +14,14 @@ from jarvis.tasks.repository import (
     InMemoryTaskRepository,
     TaskRepository,
     TaskQueryRepository,
+    TaskEventQueryRepository,
 )
 from jarvis.tasks.service import (
     InMemoryOutboxNotifier,
     OutboxNotifier,
     TaskCreationService,
     TaskQueryService,
+    TaskEventQueryService,
 )
 
 __all__ = [
@@ -29,6 +32,9 @@ __all__ = [
     "InMemoryTaskRepository",
     "OutboxNotifier",
     "TaskCreationService",
+    "TaskEventPageResponse",
+    "TaskEventQueryRepository",
+    "TaskEventQueryService",
     "TaskQueryRepository",
     "TaskQueryService",
     "TaskInput",

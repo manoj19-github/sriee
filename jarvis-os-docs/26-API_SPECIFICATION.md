@@ -107,3 +107,41 @@ Result snapshots may contain an outcome, bounded summary and opaque artifact ref
 ```
 
 The response omits task input, actor/device identity, idempotency keys, request hashes and internal event/outbox data.
+
+## List task events v1
+
+`GET /api/v1/tasks/{task_id}/events` requires task ownership by the authenticated actor and device.
+
+Query parameters:
+
+- `after_sequence`: exclusive cursor, integer ≥ 0, default `0`.
+- `limit`: page size from 1 through 100, default `50`.
+
+Response:
+
+```json
+{
+  "task_id": "tsk_...",
+  "events": [
+    {
+      "event_id": "evt_...",
+      "task_id": "tsk_...",
+      "sequence": 1,
+      "type": "task.created",
+      "schema_version": "1.0",
+      "occurred_at": "2026-07-02T12:00:00Z",
+      "correlation_id": "corr_...",
+      "data": {
+        "input_type": "text",
+        "contract_version": "1.2.0"
+      }
+    }
+  ],
+  "next_cursor": 1,
+  "has_more": false
+}
+```
+
+Events are strictly ascending and include only sequences greater than `after_sequence`. `next_cursor` is the last returned sequence, or the supplied cursor when no events remain. Clients reconnecting after WebSocket loss repeatedly request pages until `has_more=false`.
+
+Malformed IDs, unknown tasks and ownership mismatch return the same `404 task_not_found`. Invalid cursor/limit values return 422. Reads never mutate task, event or outbox state.

@@ -4,7 +4,15 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    Header,
+    HTTPException,
+    Query,
+    Request,
+    status,
+)
 
 from jarvis.security.desktop_auth import (
     AuthenticatedPrincipal,
@@ -17,12 +25,16 @@ from jarvis.tasks.models import (
     PendingApprovalResponse,
     PlanSnapshotResponse,
     TaskResultResponse,
+    TaskEventPageResponse,
+    TaskEventResponse,
     TaskSnapshotResponse,
 )
 from jarvis.tasks.repository import IdempotencyConflictError
 from jarvis.tasks.service import (
     InvalidRequestIdentifierError,
+    InvalidPaginationError,
     TaskCreationService,
+    TaskEventQueryService,
     TaskNotFoundError,
     TaskQueryService,
 )
@@ -47,6 +59,16 @@ def get_task_query_service(request: Request) -> TaskQueryService:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={"code": "task_query_service_unavailable"},
+        )
+    return service
+
+
+def get_task_event_query_service(request: Request) -> TaskEventQueryService:
+    service = getattr(request.app.state, "task_event_query_service", None)
+    if not isinstance(service, TaskEventQueryService):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"code": "task_event_query_service_unavailable"},
         )
     return service
 
@@ -161,4 +183,61 @@ async def getTask(
         result=result,
         created_at=projection.created_at,
         updated_at=projection.updated_at,
+    )
+
+
+@router.get(
+    "/tasks/{task_id}/events",
+    response_model=TaskEventPageResponse,
+)
+async def listTaskEvents(
+    task_id: str,
+    principal: Annotated[
+        AuthenticatedPrincipal,
+        Depends(authenticateDesktopSession),
+    ],
+    service: Annotated[
+        TaskEventQueryService,
+        Depends(get_task_event_query_service),
+    ],
+    after_sequence: Annotated[int, Query(ge=0)] = 0,
+    limit: Annotated[int, Query(ge=1, le=100)] = 50,
+) -> TaskEventPageResponse:
+    """Return an exclusive-cursor page for durable event replay."""
+
+    try:
+        page = await service.list(
+            task_id=task_id,
+            principal=principal,
+            after_sequence=after_sequence,
+            limit=limit,
+        )
+    except TaskNotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "task_not_found"},
+        ) from None
+    except InvalidPaginationError:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail={"code": "invalid_event_pagination"},
+        ) from None
+
+    return TaskEventPageResponse(
+        task_id=page.task_id,
+        events=tuple(
+            TaskEventResponse(
+                event_id=event.event_id,
+                task_id=event.task_id,
+                sequence=event.sequence,
+                type=event.event_type,
+                schema_version=event.schema_version,
+                occurred_at=event.occurred_at,
+                correlation_id=event.correlation_id,
+                data=dict(event.data),
+            )
+            for event in page.events
+        ),
+        next_cursor=page.next_cursor,
+        has_more=page.has_more,
     )

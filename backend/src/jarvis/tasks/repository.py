@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import hmac
 from dataclasses import replace
 from typing import Protocol
 
@@ -11,6 +12,7 @@ from jarvis.tasks.models import (
     TaskCreationBundle,
     TaskCreationOutcome,
     TaskEvent,
+    TaskEventPageRecord,
     TaskProjectionRecord,
     TaskRecord,
 )
@@ -31,6 +33,19 @@ class TaskRepository(Protocol):
 class TaskQueryRepository(Protocol):
     async def get_projection(self, task_id: str) -> TaskProjectionRecord | None:
         """Return the current task projection."""
+
+
+class TaskEventQueryRepository(Protocol):
+    async def list_authorized_events(
+        self,
+        *,
+        task_id: str,
+        actor_id: str,
+        device_id: str,
+        after_sequence: int,
+        limit: int,
+    ) -> TaskEventPageRecord | None:
+        """Return an authorized stable page or none without leaking ownership."""
 
 
 class InMemoryTaskRepository:
@@ -104,6 +119,62 @@ class InMemoryTaskRepository:
             ):
                 raise ValueError("projection identity is immutable")
             self._projections[projection.task_id] = projection
+
+    async def list_authorized_events(
+        self,
+        *,
+        task_id: str,
+        actor_id: str,
+        device_id: str,
+        after_sequence: int,
+        limit: int,
+    ) -> TaskEventPageRecord | None:
+        async with self._lock:
+            projection = self._projections.get(task_id)
+            if projection is None or not (
+                hmac.compare_digest(projection.actor_id, actor_id)
+                and hmac.compare_digest(projection.device_id, device_id)
+            ):
+                return None
+            ordered = sorted(
+                (
+                    event
+                    for event in self._events
+                    if event.task_id == task_id
+                    and event.sequence > after_sequence
+                ),
+                key=lambda event: event.sequence,
+            )
+            window = ordered[: limit + 1]
+            page_events = tuple(window[:limit])
+            return TaskEventPageRecord(
+                task_id=task_id,
+                events=page_events,
+                next_cursor=(
+                    page_events[-1].sequence
+                    if page_events
+                    else after_sequence
+                ),
+                has_more=len(window) > limit,
+            )
+
+    async def append_event_for_test(self, event: TaskEvent) -> None:
+        """Append one valid sequential event for development/query tests."""
+
+        async with self._lock:
+            if event.task_id not in self._tasks:
+                raise KeyError("task does not exist")
+            current_sequences = [
+                stored.sequence
+                for stored in self._events
+                if stored.task_id == event.task_id
+            ]
+            expected = max(current_sequences, default=0) + 1
+            if event.sequence != expected:
+                raise ValueError("event sequence must be contiguous")
+            if any(stored.event_id == event.event_id for stored in self._events):
+                raise ValueError("event ID must be unique")
+            self._events.append(event)
 
     async def snapshot(
         self,
