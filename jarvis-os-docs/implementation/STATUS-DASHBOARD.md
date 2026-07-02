@@ -6,7 +6,7 @@ Last updated: 2026-07-02
 
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
-| FastAPI platform | 12 | 2 | 0 | 0 | 10 |
+| FastAPI platform | 12 | 1 | 0 | 0 | 11 |
 | LangGraph brain | 14 | 14 | 0 | 0 | 0 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
@@ -18,7 +18,7 @@ Last updated: 2026-07-02
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
 | Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
-| **Total** | **173** | **162** | **0** | **0** | **11** |
+| **Total** | **173** | **161** | **0** | **0** | **12** |
 
 Complete functions:
 
@@ -32,6 +32,7 @@ Complete functions:
 - `110007` — digest-bound, expiring, single-use approval decision.
 - `110008` — authenticated, negotiated and bounded WebSocket session.
 - `110009` — durable replay plus bounded at-least-once live task-event streaming.
+- `110010` — separate process liveness and bounded, sanitized dependency readiness.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
 ## Stage status

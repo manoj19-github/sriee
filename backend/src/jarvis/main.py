@@ -7,6 +7,8 @@ from collections.abc import Sequence
 from fastapi import FastAPI
 
 from jarvis.config.settings import Settings
+from jarvis.health import HealthReporter
+from jarvis.health import router as health_router
 from jarvis.runtime.lifecycle import (
     ApplicationRuntime,
     ResourceSpec,
@@ -50,6 +52,7 @@ def create_application(
         lifespan=manageApplicationLifespan,
     )
     app.state.runtime = runtime
+    app.state.health_reporter = HealthReporter(runtime)
     if desktop_authenticator is not None:
         app.state.desktop_authenticator = desktop_authenticator
     if task_creation_service is not None:
@@ -62,6 +65,7 @@ def create_application(
         app.state.task_control_service = task_control_service
     if websocket_session_service is not None:
         app.state.websocket_session_service = websocket_session_service
+    app.include_router(health_router)
     app.include_router(task_router)
     app.include_router(websocket_router)
     return app

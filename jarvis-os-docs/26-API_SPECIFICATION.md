@@ -2,6 +2,8 @@
 
 Base: `/api/v1`. JSON uses UTC RFC 3339 timestamps and stable string IDs.
 
+Health probes are process-level endpoints under `/health`, outside the versioned task API base.
+
 | Method | Path | Purpose |
 |---|---|---|
 | POST | `/tasks` | Create task from text/transcript |
@@ -36,6 +38,38 @@ Base: `/api/v1`. JSON uses UTC RFC 3339 timestamps and stable string IDs.
 ```
 
 Use 409 for state/idempotency conflict, 422 for contract validation, 428 when approval is required, 429 for quota, and 503 for unavailable dependency. OpenAPI and generated clients are authoritative; CI rejects breaking diffs without a version plan.
+
+## Health probes v1
+
+`GET /health/live` reports only whether the HTTP process can return a bounded response. It does not probe dependencies and returns 200 even when readiness is degraded:
+
+```json
+{
+  "status": "live",
+  "state": "ready"
+}
+```
+
+`GET /health/ready` performs bounded health checks for telemetry, database, checkpointer, graph, providers and workers. A fully ready response is 200:
+
+```json
+{
+  "status": "ready",
+  "state": "ready",
+  "accepting_work": true,
+  "dependencies": {
+    "database": {
+      "ready": true,
+      "code": "ready"
+    }
+  },
+  "failure_code": null
+}
+```
+
+A dependency outage, exception or timeout returns 503 with `status=not_ready`, marks the runtime as not accepting work and uses only validated safe identifiers such as `providers_unavailable` or `database_health_check_failed`. The process remains live and later probes can restore readiness after recovery.
+
+Health responses never include connection strings, hosts, credentials, exception text, settings fingerprints or personal/task content. Internal metrics count liveness probes, readiness probes, degraded probes and dependency failures without payloads.
 
 ## Create task v1
 

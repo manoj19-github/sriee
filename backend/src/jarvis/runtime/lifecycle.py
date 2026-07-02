@@ -79,11 +79,14 @@ class ResourceSpec:
 
     name: str
     factory: ResourceFactory
+    health_timeout_seconds: float = 5.0
     close_timeout_seconds: float = 10.0
 
     def __post_init__(self) -> None:
         if self.name not in REQUIRED_RESOURCE_ORDER:
             raise ValueError(f"unknown managed resource: {self.name}")
+        if self.health_timeout_seconds <= 0:
+            raise ValueError("health timeout must be greater than zero")
         if self.close_timeout_seconds <= 0:
             raise ValueError("close timeout must be greater than zero")
 
@@ -187,7 +190,12 @@ class ApplicationRuntime:
                     resource = await spec.factory()
                     self._active.append((spec, resource))
                     await resource.start()
-                    health = await resource.check_health()
+                    health = await asyncio.wait_for(
+                        resource.check_health(),
+                        timeout=spec.health_timeout_seconds,
+                    )
+                    if not isinstance(health, DependencyHealth):
+                        raise RuntimeError("invalid_dependency_health")
                     self._health[spec.name] = health
                     if not health.ready:
                         raise RuntimeError("dependency_not_ready")
@@ -203,6 +211,40 @@ class ApplicationRuntime:
 
             self.accepting_work = True
             self.state = RuntimeState.READY
+
+    async def refresh_readiness(self) -> RuntimeReadiness:
+        """Re-probe active dependencies without changing process liveness."""
+
+        async with self._lock:
+            if self.state is not RuntimeState.READY:
+                return self.readiness
+
+            all_ready = len(self._active) == len(REQUIRED_RESOURCE_ORDER)
+            first_failure: str | None = None
+
+            for spec, resource in self._active:
+                try:
+                    health = await asyncio.wait_for(
+                        resource.check_health(),
+                        timeout=spec.health_timeout_seconds,
+                    )
+                    if not isinstance(health, DependencyHealth):
+                        raise RuntimeError("invalid_dependency_health")
+                except Exception:
+                    health = DependencyHealth(
+                        ready=False,
+                        code="health_check_failed",
+                    )
+
+                self._health[spec.name] = health
+                if not health.ready:
+                    all_ready = False
+                    if first_failure is None:
+                        first_failure = f"{spec.name}_{health.code}"
+
+            self.accepting_work = all_ready
+            self._failure_code = first_failure
+            return self.readiness
 
     async def shutdown(self) -> None:
         """Stop intake, drain bounded workers, and close every resource."""
