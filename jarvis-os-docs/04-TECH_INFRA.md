@@ -9,7 +9,7 @@
 | Orchestration | LangGraph 1.x | Durable checkpointer, interrupts, typed state |
 | Data | PostgreSQL 16+ | App data, audit index, graph checkpoints |
 | Ephemeral | Redis 7+ | Optional cache, presence, rate limits, distributed leases |
-| AI | Provider-neutral gateway | Local default; OpenAI/Anthropic/Gemini optional |
+| AI | Provider-neutral gateway; loopback Ollama development adapter | `qwen3:4b-instruct` local default; cloud providers remain optional and disabled |
 | Telemetry | OpenTelemetry | Traces, metrics, structured logs; local collector |
 | Packaging | MSIX for desktop; signed Python bundle/container | Reproducible, checksummed artifacts |
 

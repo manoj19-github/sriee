@@ -54,3 +54,11 @@ The prompt is accompanied by: `user_request`, `actor`, `device`, `capability_man
 ## Output
 
 The model returns a typed `PlanDraft`, never shell text for implicit execution. Invalid output is repaired once, then the task fails safely.
+
+## Local deployment
+
+The default development provider is loopback Ollama with `qwen3:4b-instruct`.
+Deployment code sends this prompt as the system message and supplies a JSON Schema for
+typed output. The provider has no direct tool or OS authority, no cloud fallback and
+no permission to reinterpret policy. Model output remains untrusted until the normal
+schema, policy, approval and executor boundaries accept it.

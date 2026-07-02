@@ -6,7 +6,7 @@ Stage 01 task/event persistence and Stage 00 fake executor.
 
 ## Functions
 
-120000–120013, 110007, 140004, plus policy interface 130003–130006 using deterministic test implementation.
+120000–120014, 110007, 140004, plus policy interface 130003–130006 using deterministic test implementation.
 
 ## Steps
 

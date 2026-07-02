@@ -15,3 +15,11 @@ REST creates/queries durable resources. WebSocket streams task events and accept
 ## Reliability
 
 Use transactions and outbox for state/events. Apply deadlines and cancellation. Retries cover classified transient reads; never blanket-retry model or side-effect calls. Health endpoints distinguish liveness, readiness, and dependency status. OpenAPI is generated and diff-checked.
+
+## Local model provider
+
+The Ollama adapter is lifecycle-managed as the `providers` runtime resource. It binds
+only to an allowlisted loopback URL, verifies the configured model through version/tag
+health endpoints, sends bounded non-streaming chat requests and supports optional JSON
+Schema output. Provider errors are sanitized and do not include prompts, responses,
+URLs or exception text. There is no automatic cloud fallback or model download.

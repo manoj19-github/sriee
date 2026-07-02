@@ -13,3 +13,5 @@ Reviewed 2026-07-02. These are implementation references, not substitutes for pi
 - OWASP LLM applications: https://owasp.org/www-project-top-10-for-large-language-model-applications/
 - OpenTelemetry specifications: https://opentelemetry.io/docs/specs/
 - Semantic Versioning: https://semver.org/
+- Ollama API: https://docs.ollama.com/api/introduction
+- Ollama Qwen3 4B Instruct: https://ollama.com/library/qwen3:4b-instruct
