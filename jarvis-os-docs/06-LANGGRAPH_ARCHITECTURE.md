@@ -60,3 +60,10 @@ Construction attaches an injected saver that the trusted composition root marks
 durable, but does not open a database connection or invoke any node. The production
 PostgreSQL saver and checkpoint migrations remain separate work under Global ID
 `140004`.
+
+The implemented `normalizeRequest` entry node validates the existing task envelope,
+principal identifiers, v1 transport contract and starting status. It preserves valid
+task/thread IDs; when absent, it assigns one task ID and derives the thread ID from it.
+The node preserves user text or transcript content exactly and returns only the
+normalized request/identity/status delta. It performs no retrieval, classification,
+model call or persistence.

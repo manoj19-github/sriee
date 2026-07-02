@@ -11,6 +11,11 @@ from jarvis.graph.builder import (
     routeAfterPolicy,
     routeAfterVerification,
 )
+from jarvis.graph.normalize import (
+    RequestNormalizationError,
+    RequestNormalizationSettings,
+    normalizeRequest,
+)
 from jarvis.graph.state import JarvisState
 
 __all__ = [
@@ -20,7 +25,10 @@ __all__ = [
     "GraphContractError",
     "JarvisState",
     "NodeSpec",
+    "RequestNormalizationError",
+    "RequestNormalizationSettings",
     "buildJarvisGraph",
+    "normalizeRequest",
     "routeAfterApproval",
     "routeAfterPolicy",
     "routeAfterVerification",
