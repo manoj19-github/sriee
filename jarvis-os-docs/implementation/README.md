@@ -18,6 +18,7 @@ Mandatory per-function execution records:
 - [Coding logs](coding-log/)
 - [Testing logs](testing-log/)
 - [Versioning logs](versioning-log/)
+- [Git delivery logs](git-log/)
 
 Program-level and historical records:
 

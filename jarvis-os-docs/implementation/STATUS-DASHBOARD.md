@@ -6,7 +6,7 @@ Last updated: 2026-07-02
 
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
-| FastAPI platform | 12 | 9 | 0 | 0 | 3 |
+| FastAPI platform | 12 | 8 | 0 | 0 | 4 |
 | LangGraph brain | 14 | 14 | 0 | 0 | 0 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
@@ -16,13 +16,14 @@ Last updated: 2026-07-02
 | Voice and vision | 11 | 11 | 0 | 0 | 0 |
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
-| **Total** | **125** | **121** | **0** | **0** | **4** |
+| **Total** | **125** | **120** | **0** | **0** | **5** |
 
 Complete functions:
 
 - `110000` — typed immutable settings loading, safe diagnostics and validation.
 - `110001` — ordered FastAPI startup, readiness, rollback, bounded drain and shutdown.
 - `110002` — signed desktop-session authentication, registry binding, contract negotiation and replay protection.
+- `110003` — authenticated, idempotent task creation with atomic task/event/outbox contract.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
 ## Stage status

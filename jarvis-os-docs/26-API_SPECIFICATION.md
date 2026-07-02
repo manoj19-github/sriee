@@ -36,3 +36,37 @@ Base: `/api/v1`. JSON uses UTC RFC 3339 timestamps and stable string IDs.
 ```
 
 Use 409 for state/idempotency conflict, 422 for contract validation, 428 when approval is required, 429 for quota, and 503 for unavailable dependency. OpenAPI and generated clients are authoritative; CI rejects breaking diffs without a version plan.
+
+## Create task v1
+
+`POST /api/v1/tasks` requires authenticated desktop headers plus:
+
+- `Idempotency-Key`: 16–128 safe identifier characters.
+- `X-Correlation-Id`: 16–128 safe identifier characters.
+
+Request:
+
+```json
+{
+  "input": {
+    "type": "text",
+    "content": "Continue my JARVIS backend work."
+  }
+}
+```
+
+`input.type` is `text` or `transcript`; content is non-blank and at most 16,000 characters. Unknown fields are rejected.
+
+Accepted response (`202`):
+
+```json
+{
+  "task_id": "tsk_...",
+  "status": "created",
+  "created": true,
+  "event_sequence": 1,
+  "accepted_at": "2026-07-02T12:00:00Z"
+}
+```
+
+An identical idempotent replay returns the original task with `created=false`. Reusing the same actor/device/key scope for a different input type, content, or negotiated contract returns `409 idempotency_key_conflict`.
