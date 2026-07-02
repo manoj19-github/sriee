@@ -1,0 +1,26 @@
+# Function Map — Windows Executor
+
+Source: [desktop automation](../../13-DESKTOP_AUTOMATION.md), [terminal agent](../../15-TERMINAL_AGENT.md), and [security model](../../19-SECURITY_MODEL.md).
+
+Technology: C#, Windows APIs, UI Automation, process job objects, local receipt store.
+
+| Global ID | Canonical name | Function | Description | Reads | Writes | Status | Notes |
+|---|---|---|---|---|---|---|---|
+| 160000 | `csharp-executor-advertise-capabilities-mandatory-p0-planned-current-v1` | `buildCapabilityManifest` | Discovers available signed adapters and publishes versioned capabilities/constraints. | adapter registry; OS/tool availability | api/local: capability manifest | planned/current/v1 | Availability is not permission. |
+| 160001 | `csharp-executor-validate-action-mandatory-p0-planned-current-v1` | `validateActionRequest` | Authenticates sender and validates contract, capability, parameters, deadline, actor/device and size. | action request; session; schemas | local: validated action/error | planned/current/v1 | Unknown version/capability fails closed. |
+| 160002 | `csharp-executor-canonicalize-resource-mandatory-p0-planned-current-v1` | `canonicalizeActionResource` | Resolves paths, executables, windows and project IDs to stable local resources and detects traversal/junction escape. | action target; registries; filesystem/OS | local: canonical resource fingerprint | planned/current/v1 | Done before policy and again at execution where needed. |
+| 160003 | `csharp-executor-acquire-resource-lease-mandatory-p0-planned-current-v1` | `acquireResourceLease` | Serializes conflicting side effects with bounded lease and cancellation. | action/resource fingerprint; lease store | local: lease record | planned/current/v1 | Prevents two tasks mutating the same resource concurrently. |
+| 160004 | `csharp-executor-reconcile-idempotency-mandatory-p0-planned-current-v1` | `reconcileIdempotency` | Looks up prior intent/receipt/postcondition before any retry and returns existing result when equivalent. | action ID/key/digest; receipt store; OS state | local: reconciliation result | planned/current/v1 | Mismatched key reuse is rejected. |
+| 160005 | `csharp-executor-dispatch-adapter-mandatory-p0-planned-current-v1` | `dispatchToAdapter` | Rechecks policy/approval and invokes exactly one registered adapter under timeout/cancellation. | validated action; policy; approval; adapter | OS/tool side effect; receipt state | planned/current/v1 | No reflection-based arbitrary invocation. |
+| 160006 | `csharp-windows-open-application-mandatory-p0-planned-current-v1` | `openRegisteredApplication` | Starts or focuses allowlisted app using registered executable and typed arguments. | app registry; action; process/window state | OS: process/window | planned/current/v1 | Never resolves executable from model-provided path. |
+| 160007 | `csharp-windows-manage-window-mandatory-p1-planned-current-v1` | `manageWindow` | Lists, focuses, moves or resizes verified top-level windows across monitors/DPI. | OS: window inventory; requested bounds | OS: window state | planned/current/v1 | Cannot interact with secure desktop. |
+| 160008 | `csharp-windows-read-write-clipboard-optional-p1-planned-current-v1` | `accessClipboard` | Reads/writes explicitly supported formats under foreground, classification and permission rules. | OS clipboard; action | OS clipboard; audit | planned/current/v1 | Secret/password-manager formats denied. |
+| 160009 | `csharp-windows-apply-file-patch-mandatory-p1-planned-current-v1` | `applyScopedFilePatch` | Validates root, preimage hash and patch, writes atomically and returns changed-file receipt. | scoped files; patch; preimage hash | filesystem: project files; receipt | planned/current/v1 | Preserves unrelated work; no arbitrary delete. |
+| 160010 | `csharp-windows-run-process-mandatory-p0-planned-current-v1` | `runRegisteredProcess` | Resolves executable ID, passes argument array, applies cwd/env/network/output/time limits and owns process tree. | ProcessSpec; executable/project registry | OS: process tree; bounded stdout/stderr | planned/current/v1 | Shell is separate high-risk capability. |
+| 160011 | `csharp-executor-cancel-action-mandatory-p0-planned-current-v1` | `cancelAction` | Cancels token, closes adapter operation and terminates owned process tree when safe. | cancellation request; active attempt | OS/local: cancelled/reconciled receipt | planned/current/v1 | Never terminates unrelated process by name. |
+| 160012 | `csharp-executor-verify-postcondition-mandatory-p0-planned-current-v1` | `verifyNativePostcondition` | Uses independent native read to verify expected process/window/file/tool state. | action verification spec; OS/tool state | local/api: verification evidence | planned/current/v1 | Evidence is typed and size-bounded. |
+| 160013 | `csharp-executor-store-receipt-mandatory-p0-planned-current-v1` | `storeExecutionReceipt` | Atomically stores attempt, digest, timestamps, result and postcondition before reporting. | execution/verification result | local receipt store; api action result | planned/current/v1 | Receipt survives desktop restart. |
+
+## Change rule
+
+Update this map and threat model before adding an adapter, native API, file mutation, shell/elevation behavior, retry, or resource canonicalization rule.

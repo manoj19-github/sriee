@@ -1,0 +1,33 @@
+"""Authentication, authorization, and secret-safe security primitives."""
+
+from jarvis.security.desktop_auth import (
+    AuthenticatedPrincipal,
+    ContractRange,
+    DesktopSessionAuthenticator,
+    DesktopSessionRecord,
+    DesktopSessionToken,
+    DeviceRecord,
+    DeviceStatus,
+    InMemoryDeviceRegistry,
+    InMemoryNonceStore,
+    InMemorySessionRegistry,
+    SessionStatus,
+    authenticate_desktop_session,
+    authenticateDesktopSession,
+)
+
+__all__ = [
+    "AuthenticatedPrincipal",
+    "ContractRange",
+    "DesktopSessionAuthenticator",
+    "DesktopSessionRecord",
+    "DesktopSessionToken",
+    "DeviceRecord",
+    "DeviceStatus",
+    "InMemoryDeviceRegistry",
+    "InMemoryNonceStore",
+    "InMemorySessionRegistry",
+    "SessionStatus",
+    "authenticate_desktop_session",
+    "authenticateDesktopSession",
+]
