@@ -24,13 +24,25 @@ Memory controls, project RAG, UI Automation, request-scoped screen OCR.
 
 Local wake word/STT/TTS, visible privacy controls, accessibility and noisy-room evaluation.
 
-## Milestone 5 — Extensibility
+## Milestone 5 — Sriee companion
+
+Female voice profile, text/voice relationship settings, morning/evening briefings, consented routines, original stories/jokes, opt-in playful romantic conversation, and immediate stop/private controls.
+
+## Milestone 6 — Visible sensors
+
+Camera session controls, local presence, optional enrolled-face personalization, uncertain expression cues, document/QR scanning and biometric deletion/liveness evaluation.
+
+## Milestone 7 — Integrations
+
+Calendar/reminders, notifications, media, system health, browser/research and draft-first email behind independent adapters and grants.
+
+## Milestone 8 — Extensibility
 
 Out-of-process plugin SDK, signing, permission review, sample plugins.
 
 ## Later, only with evidence
 
-Browser transactions, email/calendar writes, elevation broker, remote control plane, and camera features. Each requires its own threat model and opt-in launch gate.
+Browser transactions, email/calendar writes, elevation broker, remote control plane, smart home, mobile/wearable synchronization and multi-user features. Each requires its own threat model and opt-in launch gate.
 
 ## Explicitly never on autopilot
 

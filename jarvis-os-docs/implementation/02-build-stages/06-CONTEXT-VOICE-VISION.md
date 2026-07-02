@@ -6,7 +6,7 @@ Core task safety and privacy center are stable. Each feature launches independen
 
 ## Functions
 
-140006–140012, 180000–180016, and 210000–210011.
+140006–140012, 180000–180016, and 210000–210016.
 
 ## Steps
 
@@ -29,10 +29,14 @@ Core task safety and privacy center are stable. Each feature launches independen
 17. Add consented companion preferences/routines and capped contextual care suggestions.
 18. Route every accepted companion action through the standard task, policy, approval and executor pipeline.
 19. Add Stop Sriee, sensor revocation and persona manipulation/dependency red-team tests.
+20. Add versioned relationship style, terms, exclusions, romance/flirt levels and private spoken-content controls.
+21. Add original romantic/bedtime stories and humor with copyright, privacy and repetition checks.
+22. Add playful non-explicit flirting with immediate rejection handling and serious-context suppression.
+23. Add evening briefings with tomorrow's schedule, honest activity counters and no productivity shaming.
 
 ## Required tests
 
-Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, companion-originated risky actions, and immediate kill control.
+Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, romance opt-in/out, rejection, serious-context suppression, age safety, copyrighted-content boundaries, companion-originated risky actions, and immediate kill control.
 
 ## Exit gate
 

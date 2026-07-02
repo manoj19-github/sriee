@@ -58,3 +58,20 @@ Product, contracts, prompts, policy, migrations and agents version independently
 - Rollback steps: revert this design change; no runtime or stored data is affected.
 - Evaluation/test report: documentation checks passed with 143 unique function rows, 18 new planned rows, matching dashboard totals, valid canonical statuses/columns and zero broken relative links.
 - Known issues: all newly allocated functions remain planned.
+
+## VERSION-0.2.0-design — 2026-07-02
+
+| Domain | Old | New | Compatibility/migration |
+|---|---:|---:|---|
+| Product | Sriee companion baseline | consolidated 35-area roadmap plus romantic entertainment | additive; features remain disabled/unimplemented |
+| Policy | general companion boundaries | explicit romance opt-in, intensity, rejection and serious-context rules | baseline safeguards cannot be disabled |
+| Prompts/agents | affectionate dialogue proposal | proposed stories, jokes, playful flirting and evening briefing | documentation only; no runtime prompt deployed |
+| Database | no relationship profile tables | unchanged | storage schema required before implementation |
+
+- Global IDs changed: added planned `210012–210016`.
+- Added: relationship style configuration, original romantic stories, jokes, bounded playful flirting and evening briefings.
+- Security/privacy changes: romance is independently configurable; rejection is immediate; romantic language is suppressed in approval, emergency, financial/security and age-uncertain contexts.
+- Upgrade steps: none; planning documentation only.
+- Rollback steps: revert this design change; no runtime or stored data is affected.
+- Evaluation/test report: passed with 148 unique function rows, 5 new planned companion rows, 35 roadmap areas, matching dashboard totals, valid map structure/status and zero broken relative links.
+- Known issues: all five new functions and the consolidated roadmap remain planned.

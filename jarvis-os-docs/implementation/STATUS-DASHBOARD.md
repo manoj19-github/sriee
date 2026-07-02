@@ -16,8 +16,8 @@ Last updated: 2026-07-02
 | Voice and vision | 17 | 17 | 0 | 0 | 0 |
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
-| Sriee companion experience | 12 | 12 | 0 | 0 | 0 |
-| **Total** | **143** | **132** | **0** | **0** | **11** |
+| Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
+| **Total** | **148** | **137** | **0** | **0** | **11** |
 
 Complete functions:
 

@@ -15,6 +15,7 @@ This repository is the source of truth for JARVIS OS: a Python/FastAPI/LangGraph
 - Operations: `33-DEBUG_LOG.md` → `34-DEEP_DIVE_LOG.md` → `39-MONITORING.md`
 - Runtime behavior: `01-MASTER_PROMPT.md` and `prompts/`
 - Step-by-step implementation: `implementation/README.md`
+- Consolidated capability roadmap: `41-SRIEE_CAPABILITY_ROADMAP.md`
 
 ## Non-negotiable invariants
 
