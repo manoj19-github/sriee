@@ -35,3 +35,7 @@ Implemented client frames: `ping`, `task.subscribe`, `task.unsubscribe`.
 Implemented server frames: `welcome`, `pong`, `task.event`, `task.subscribed`, `task.unsubscribed`, `resync.required`, `error`.
 
 Subscriptions first replay durable pages from the exclusive cursor, then receive bounded live events. Duplicate live sequences are ignored. A gap or queue overflow removes the affected subscription and emits `resync.required`; the client resumes through `GET /api/v1/tasks/{task_id}/events`.
+
+Implemented `error` payloads contain the stable fields `code`, `message`,
+`correlation_id`, `retryable`, and `details`. Codes and messages are allowlisted;
+raw frame content and exception text are never reflected.

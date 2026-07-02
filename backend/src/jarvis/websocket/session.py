@@ -14,6 +14,11 @@ from fastapi import APIRouter, HTTPException, WebSocket
 from fastapi.encoders import jsonable_encoder
 from starlette.websockets import WebSocketDisconnect
 
+from jarvis.errors import (
+    WebSocketProtocolError,
+    resolveCorrelationId,
+    webSocketErrorFrame,
+)
 from jarvis.security.desktop_auth import (
     AuthenticatedPrincipal,
     DesktopSessionAuthenticator,
@@ -249,6 +254,9 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
     queue = await service.broker.register(connection.connection_id)
     cursors: dict[str, int] = {}
     timestamps: deque[float] = deque()
+    correlation_id = resolveCorrelationId(
+        websocket.headers.get("x-correlation-id")
+    )
     await websocket.accept()
     await websocket.send_json(
         {
@@ -293,7 +301,10 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
                     frame = json.loads(raw)
                 except json.JSONDecodeError:
                     await websocket.send_json(
-                        {"type": "error", "payload": {"code": "invalid_json"}}
+                        webSocketErrorFrame(
+                            WebSocketProtocolError("invalid_json"),
+                            correlation_id=correlation_id,
+                        )
                     )
                     continue
                 frame_type = frame.get("type") if isinstance(frame, dict) else None
@@ -305,10 +316,12 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
                     after = payload.get("after_sequence", 0)
                     if not isinstance(task_id, str) or not isinstance(after, int):
                         await websocket.send_json(
-                            {
-                                "type": "error",
-                                "payload": {"code": "invalid_subscription"},
-                            }
+                            webSocketErrorFrame(
+                                WebSocketProtocolError(
+                                    "invalid_subscription"
+                                ),
+                                correlation_id=correlation_id,
+                            )
                         )
                         continue
                     if not await service.connections.subscribe(
@@ -316,10 +329,10 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
                         task_id,
                     ):
                         await websocket.send_json(
-                            {
-                                "type": "error",
-                                "payload": {"code": "subscription_limit"},
-                            }
+                            webSocketErrorFrame(
+                                WebSocketProtocolError("subscription_limit"),
+                                correlation_id=correlation_id,
+                            )
                         )
                         continue
                     await service.broker.subscribe(
@@ -344,10 +357,10 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
                             task_id,
                         )
                         await websocket.send_json(
-                            {
-                                "type": "error",
-                                "payload": {"code": "subscription_denied"},
-                            }
+                            webSocketErrorFrame(
+                                WebSocketProtocolError("subscription_denied"),
+                                correlation_id=correlation_id,
+                            )
                         )
                         continue
                     cursors[task_id] = cursor
@@ -380,7 +393,10 @@ async def openWebSocketSession(websocket: WebSocket) -> None:
                         )
                 else:
                     await websocket.send_json(
-                        {"type": "error", "payload": {"code": "unknown_frame"}}
+                        webSocketErrorFrame(
+                            WebSocketProtocolError("unknown_frame"),
+                            correlation_id=correlation_id,
+                        )
                     )
 
             if broker_task in done:

@@ -39,6 +39,14 @@ Health probes are process-level endpoints under `/health`, outside the versioned
 
 Use 409 for state/idempotency conflict, 422 for contract validation, 428 when approval is required, 429 for quota, and 503 for unavailable dependency. OpenAPI and generated clients are authoritative; CI rejects breaking diffs without a version plan.
 
+Implemented error mapping v1 uses an allowlisted code-to-status/message/retryability
+registry for API and WebSocket failures. API failures return the envelope above and
+repeat the safe correlation identifier in `X-Correlation-Id`. WebSocket `error`
+frames use the same five fields as their payload. Validation details contain at most
+20 issue locations and types; rejected input, validator messages and contexts are
+not returned. Unknown exceptions become non-retryable `internal_error` responses
+without exception text or stack traces.
+
 ## Health probes v1
 
 `GET /health/live` reports only whether the HTTP process can return a bounded response. It does not probe dependencies and returns 200 even when readiness is degraded:

@@ -7,6 +7,7 @@ from collections.abc import Sequence
 from fastapi import FastAPI
 
 from jarvis.config.settings import Settings
+from jarvis.errors import installDomainErrorHandlers
 from jarvis.health import HealthReporter
 from jarvis.health import router as health_router
 from jarvis.runtime.lifecycle import (
@@ -53,6 +54,7 @@ def create_application(
     )
     app.state.runtime = runtime
     app.state.health_reporter = HealthReporter(runtime)
+    installDomainErrorHandlers(app)
     if desktop_authenticator is not None:
         app.state.desktop_authenticator = desktop_authenticator
     if task_creation_service is not None:

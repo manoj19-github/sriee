@@ -286,6 +286,10 @@ def test_subscription_limit_and_denied_task_return_bounded_errors() -> None:
             limited = websocket.receive_json()
 
     assert limited["payload"]["code"] == "subscription_limit"
+    assert limited["payload"]["retryable"] is True
+    assert limited["payload"]["details"] == {}
+    assert limited["payload"]["correlation_id"].startswith("corr_")
+    assert "message" in limited["payload"]
 
 
 def test_frame_size_and_rate_limits_close_session() -> None:
