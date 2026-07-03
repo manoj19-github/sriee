@@ -18,6 +18,9 @@ This repository is the source of truth for JARVIS OS: a Python/FastAPI/LangGraph
 - Consolidated capability roadmap: `41-SRIEE_CAPABILITY_ROADMAP.md`
 - Developer coach and wellness: `42-DEVELOPER_COACH_WELLNESS.md`
 - Local model runtime: `43-OLLAMA_LOCAL_MODEL.md`
+- Architect proposal coverage: `44-ARCHITECT-FEATURE-COVERAGE.md`
+- Lifestyle and entertainment: `45-LIFESTYLE-ENTERTAINMENT.md`
+- Scheduler and workflow library: `46-SCHEDULER-WORKFLOWS.md`
 
 ## Non-negotiable invariants
 

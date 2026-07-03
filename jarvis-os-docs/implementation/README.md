@@ -10,9 +10,12 @@ This handbook turns the architecture documents into a controlled build sequence.
 4. [Sriee companion program](00-program/03-SRIEE-COMPANION-PROGRAM.md)
 5. [Capability delivery program](00-program/04-CAPABILITY-ROADMAP.md)
 6. [Developer coach and wellness program](00-program/05-DEVELOPER-COACH-WELLNESS-PROGRAM.md)
-7. Read the function map for the component being changed.
-8. Execute the matching build-stage guide.
-9. Append coding, testing, deep-dive, and version records.
+7. [Architect feature coverage](../44-ARCHITECT-FEATURE-COVERAGE.md)
+8. [Lifestyle and entertainment](../45-LIFESTYLE-ENTERTAINMENT.md)
+9. [Scheduler and workflow library](../46-SCHEDULER-WORKFLOWS.md)
+10. Read the function map for the component being changed.
+11. Execute the matching build-stage guide.
+12. Append coding, testing, deep-dive, and version records.
 
 Current truth: [Status dashboard](STATUS-DASHBOARD.md).
 
@@ -47,6 +50,7 @@ Program-level and historical records:
 | 200000–200099 | Plugin platform | [plugin-platform](01-function-maps/200-PLUGIN-PLATFORM.md) |
 | 210000–210099 | Sriee companion experience | [sriee-companion](01-function-maps/210-SRIEE-COMPANION.md) |
 | 220000–220099 | Developer coach and wellness | [developer-coach-wellness](01-function-maps/220-DEVELOPER-COACH-WELLNESS.md) |
+| 230000–230099 | Lifestyle and entertainment | [lifestyle-entertainment](01-function-maps/230-LIFESTYLE-ENTERTAINMENT.md) |
 
 ## Build stages
 
@@ -60,7 +64,7 @@ Stages are executed in numeric order. A later stage may be explored, but impleme
 | 03 | WPF desktop and secure transport |
 | 04 | First “continue project” vertical slice |
 | 05 | Coding, Git, terminal, and Docker assistance |
-| 06 | Memory, RAG, voice, vision, Sriee, developer coaching, and general wellness |
+| 06 | Memory, RAG, voice, vision, Sriee, coaching, wellness, lifestyle, and entertainment |
 | 07 | Plugins, hardening, packaging, and release |
 
 ## Status truth

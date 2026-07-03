@@ -7,18 +7,19 @@ Last updated: 2026-07-03
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 15 | 4 | 0 | 0 | 11 |
+| LangGraph brain | 17 | 6 | 0 | 0 | 11 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
 | Windows executor | 14 | 14 | 0 | 0 | 0 |
 | Developer integrations | 14 | 14 | 0 | 0 | 0 |
-| Voice and vision | 17 | 17 | 0 | 0 | 0 |
+| Voice and vision | 18 | 18 | 0 | 0 | 0 |
 | Observability and operations | 12 | 12 | 0 | 0 | 0 |
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
-| Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
+| Sriee companion experience | 21 | 21 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
-| **Total** | **174** | **150** | **0** | **0** | **24** |
+| Lifestyle and entertainment | 18 | 18 | 0 | 0 | 0 |
+| **Total** | **199** | **175** | **0** | **0** | **24** |
 
 Complete functions:
 

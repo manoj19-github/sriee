@@ -14,7 +14,7 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | 2 | AI conversation | Contextual dialogue, approved long-term memory, humor, stories, translation, summarization, brainstorming, explanation and daily conversation. | LangGraph `120xxx`; memory `140xxx`; Sriee `210xxx`; coach `220xxx` |
 | 3 | Personal assistant | Morning/evening briefings with time, weather, calendar, reminders, tasks, GitHub, news, system health and goals. | Sriee `210002`, `210016`; coach `220001`; connector plugins |
 | 4 | Daily planner | To-dos, notes, goals, meetings, recurring tasks, focus timer, time blocking and Pomodoro. | Coach `220005`, `220012`; task/calendar plugins |
-| 5 | Smart reminders | One-time and recurring reminders with timezone, acknowledgement, snooze, expiry and quiet-hour behavior. | Task scheduler; desktop notifications |
+| 5 | Smart reminders | One-time and recurring reminders with timezone, acknowledgement, snooze, expiry and quiet-hour behavior. | Sriee `210017`, `210020`; desktop notifications |
 | 6 | Coding assistant | Generate, explain, debug, review, refactor and test code; APIs, SQL, React, Flutter, FastAPI, Docker, Kubernetes, LangGraph and documentation. | LangGraph `120xxx`; developer `170xxx` |
 | 7 | VS Code integration | Open projects, create/rename/search files, explain/fix errors, run/debug projects and install approved packages. | Developer `170000–170005`; executor `160xxx` |
 | 8 | Git assistant | Clone, inspect, branch, commit, merge, explain conflicts, prepare pull requests, release notes and changelogs. | Developer `170006–170009` |
@@ -24,7 +24,7 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | 12 | File-system AI | Find, rename, copy, move and organize scoped files; duplicate/storage analysis. Destructive work requires preview and approval. | Executor `160002`, `160009`; policy `130xxx` |
 | 13 | Browser agent | Open/search/read/summarize pages, fill forms and handle transfers under domain/resource permissions. Submission, upload and transactions require exact approval. | Browser specification; plugin/adapters `200xxx` |
 | 14 | YouTube assistant | Search and control permitted playback for music/tutorials. It may use ordinary player controls but never bypass platform rules or protections. | Media/browser plugin |
-| 15 | Music assistant | Spotify, YouTube Music and local-library playback, queue, pause/next and permitted volume control. | Media plugins; executor |
+| 15 | Music assistant | Favourite songs, provider/local sources, playlists, contextual proposals, queue, playback, safe volume, sleep timer and opt-in analytics. | Lifestyle/media `230000–230017`; plugins; executor |
 | 16 | Vision AI | Visible webcam sessions for presence, optional local face enrollment/matching, hand/pose observations, QR/document scanning and uncertain expression cues. | Voice/vision `180011–180016`; future typed observations |
 | 17 | Screen understanding | Read permitted VS Code, browser, terminal, PDF, image, log, diagram and chart context with provenance. | Voice/vision `180006–180009` |
 | 18 | OCR | Extract bounded text and geometry from permitted images, PDFs and screenshots. | Voice/vision `180007–180010` |
@@ -37,14 +37,16 @@ This roadmap consolidates the requested Siri/Alexa/Gemini/Copilot/ChatGPT-style 
 | 25 | Notification center | Unify privacy-filtered GitHub, calendar, email, weather, task and system alerts with quiet hours. | Desktop `150010`; plugins |
 | 26 | Home dashboard | User-configurable weather, calendar, CPU/RAM, Docker, GitHub, news, tasks, notes and music widgets. | Desktop `150xxx`; observability `190xxx` |
 | 27 | Plugin marketplace | Signed third-party integrations such as Home Assistant, Slack, Discord, Jira, Trello and Notion. | Plugin platform `200xxx` |
-| 28 | Multi-agent system | LangGraph coordinates bounded planner, coding, desktop, browser, vision, memory, research, Git, Docker, calendar, security, file and voice specialists. | LangGraph `120xxx`; agent blueprint |
-| 29 | Automation | Scheduled routines such as opening an approved development workspace at 9 AM. Each action retains its normal scope and approval tier. | Scheduler; Sriee routines; executor |
+| 28 | Multi-agent system | LangGraph coordinates bounded planner, coding, desktop, browser, vision, memory, research, Git, Docker, calendar, security, file and voice specialists. | LangGraph `120016`; agent blueprint |
+| 29 | Automation | Scheduled routines and approved workflow templates such as opening a development workspace at 9 AM. Each action retains its normal scope and approval tier. | Sriee `210017–210020`; scheduler/workflow library; executor |
 | 30 | Smart suggestions | Capped, dismissible suggestions for failed builds, learning, breaks and resource pressure rather than frequent interruptions. | Sriee `210008`; coach `220002–220004`, `220020`, `220023`; observability `190xxx` |
 | 31 | Security | Local session authentication, permission center, audit trail, encryption and OS-backed authentication. Face matching personalizes only; Windows Hello may authenticate through OS APIs. | Security `130xxx`; desktop `150008–150009` |
 | 32 | Offline AI | Optional local STT/TTS, embeddings and language models with explicit cloud routing and data-egress policy. | Infrastructure/provider layer |
 | 33 | Developer mode | Scoped terminal, Docker/Kubernetes, Git, API/database testing and log analysis with stronger previews and receipts. | Developer `170xxx`; executor `160xxx` |
 | 34 | System health and wellness | Monitor CPU, RAM, GPU, disk, network, battery and available temperatures; optionally organize consented wearable/manual wellness information without diagnosis. | Observability `190xxx`; coach/wellness `220016–220024`; native adapters |
-| 35 | Future ecosystem | Smart-home, mobile, wearable, multi-device, multi-user, custom-agent, plugin SDK and enterprise modes after separate threat models. | Plugin platform and future allocations |
+| 35 | Lifestyle and entertainment | Explicit hobbies, routine and celebration preferences plus explainable music/book/film/course/game/activity recommendations. | Lifestyle `230000`, `230012–230017`; memory `140xxx` |
+| 36 | Reviewable improvement | Verified task outcomes may produce human-reviewable reflection candidates; Sriee never rewrites prompts, policy or tools automatically. | LangGraph `120015`; observability `190xxx` |
+| 37 | Future ecosystem | Smart-home, mobile, wearable, multi-device, multi-user, custom-agent, karaoke, multi-room and enterprise modes after separate threat models. | Plugin platform and future allocations |
 
 ## Sriee romantic companion mode
 

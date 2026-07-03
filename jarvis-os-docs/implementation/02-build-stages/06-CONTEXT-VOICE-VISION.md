@@ -6,7 +6,8 @@ Core task safety and privacy center are stable. Each feature launches independen
 
 ## Functions
 
-140006–140012, 180000–180016, 210000–210016, and 220000–220024.
+120015–120016, 140006–140012, 180000–180017, 210000–210020,
+220000–220024, and 230000–230017.
 
 ## Steps
 
@@ -40,10 +41,24 @@ Core task safety and privacy center are stable. Each feature launches independen
 28. Add manual wellness records, then revocable wearable connectors with separate sensitive storage.
 29. Add descriptive wellness summaries, configurable care reminders and self-reported emotional check-ins.
 30. Add lifestyle/resource suggestions and the non-diagnostic/medication/urgent-language boundary filter.
+31. Add reviewable post-task reflection candidates and bounded specialist workflows;
+    neither may rewrite prompts, policy or tools automatically.
+32. Add optional voice matching as a low-assurance personalization/authentication
+    signal; consequential actions still require the normal trusted authenticator.
+33. Add timezone-aware personal schedules, occasion reminders, periodic reports and
+    signed workflow templates with per-action policy checks.
+34. Add explicit lifestyle preferences, hobbies/interests and celebration records
+    with inspect/correct/export/delete controls.
+35. Add local-library and provider-backed music sources, favourite tracks, playlists,
+    queues, playback controls, sleep timers and user-initiated analytics.
+36. Add contextual music suggestions only from chosen modes, explicit statements and
+    consented routines; never infer hidden mood.
+37. Add media boundary tests for DRM bypass, hidden provider credentials, lyrics
+    copying, unsafe volume, meeting interruption and unapproved external writes.
 
 ## Required tests
 
-Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, greeting cooldown, quiet mode, expression uncertainty/correction, manipulative persona prompts, romance opt-in/out, rejection, serious-context suppression, age safety, copyrighted-content boundaries, fabricated learning/project progress, no-consent diagnostic inspection, proactive fatigue, wellness unit/freshness/conflict, medication advice, diagnostic/normality claims, urgent-language handling, companion-originated risky actions, and immediate kill control.
+Cross-user/project ACL leakage, stale/deleted memory, secret candidate, malicious document/screen instructions, password field capture, excluded app, secure desktop, multi-monitor DPI, raw artifact expiry, cloud egress disabled, wake false accept, uncertain destructive transcript, camera denial/disconnect, biometric deletion, liveness/spoof, false match/abstention, voice-replay/low-confidence authentication, greeting cooldown, quiet mode, timezone/DST/replayed schedules, workflow-template tampering, expression uncertainty/correction, manipulative persona prompts, romance opt-in/out, rejection, serious-context suppression, age safety, copyrighted-content and lyrics boundaries, local-library traversal, provider revocation, favourite/playlist correction and deletion, unsafe volume, meeting ducking, hidden mood inference, fabricated learning/project progress, no-consent diagnostic inspection, proactive fatigue, wellness unit/freshness/conflict, medication advice, diagnostic/normality claims, urgent-language handling, companion-originated risky actions, and immediate kill control.
 
 ## Exit gate
 
