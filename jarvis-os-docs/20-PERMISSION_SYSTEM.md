@@ -31,3 +31,12 @@ Only eligible R1/R2 capabilities may be remembered. Grants are narrow, visible, 
 ## TOCTOU defense
 
 Immediately before execution, re-resolve canonical resources, re-evaluate policy, verify approval signature/digest/expiry, and reject changed files/windows/targets when material to safety.
+
+## Graph preliminary decisions
+
+The graph stores one minimal preliminary decision per action to route plans toward
+denial, native approval or execution. Aggregate rules evaluate combinations and
+repeated capabilities so risk cannot be reduced by splitting one effect across
+multiple actions. These records are checkpoint evidence only: the local desktop
+policy engine remains authoritative and re-evaluates every action immediately before
+dispatch.

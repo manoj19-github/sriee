@@ -48,3 +48,8 @@ Persist JSON-compatible values with explicit schema versions. Never checkpoint f
 - Results are append-only and identify executor/device.
 - The final response cites only stored observations/results.
 - Redaction occurs before persistence and telemetry export.
+
+`policy_decisions` contains minimal immutable projections: stable decision/action IDs,
+`allow|ask|deny`, R0–R4 tier, fixed reason codes, policy reference/version, optional
+opaque scoped-grant reference and whether fresh approval is required. It excludes
+action arguments, policy rule bodies, model prose and secrets.

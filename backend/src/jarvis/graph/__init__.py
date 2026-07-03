@@ -73,6 +73,22 @@ from jarvis.graph.validation import (
     PlanValidationSettings,
     validatePlan,
 )
+from jarvis.graph.policy import (
+    PlanPolicyError,
+    PlanPolicyService,
+    PlanPolicySettings,
+    PolicyActionRule,
+    PolicyAggregateRule,
+    PolicyDecision,
+    PolicyDecisionKind,
+    PolicySnapshot,
+    PolicySnapshotResolver,
+    RiskTier,
+    SecurityAssessment,
+    SecurityPolicyAdvisor,
+    SecurityRecommendation,
+    evaluatePlanPolicy,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -125,6 +141,19 @@ __all__ = [
     "PlanValidationError",
     "PlanValidationService",
     "PlanValidationSettings",
+    "PlanPolicyError",
+    "PlanPolicyService",
+    "PlanPolicySettings",
+    "PolicyActionRule",
+    "PolicyAggregateRule",
+    "PolicyDecision",
+    "PolicyDecisionKind",
+    "PolicySnapshot",
+    "PolicySnapshotResolver",
+    "RiskTier",
+    "SecurityAssessment",
+    "SecurityPolicyAdvisor",
+    "SecurityRecommendation",
     "RequestNormalizationError",
     "RequestNormalizationSettings",
     "buildJarvisGraph",
@@ -136,4 +165,5 @@ __all__ = [
     "routeAfterPolicy",
     "routeAfterVerification",
     "validatePlan",
+    "evaluatePlanPolicy",
 ]

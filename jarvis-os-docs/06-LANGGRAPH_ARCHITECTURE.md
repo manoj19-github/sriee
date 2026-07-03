@@ -97,3 +97,18 @@ rejects duplicate action semantics. Every action must have at least one verifica
 definition declared by its capability. Trusted limits bound action/criterion counts,
 arguments, dependency edges, aggregate timeout and critical-path timeout. All
 failures use content-free typed codes; no model call or side effect occurs.
+
+The implemented `evaluatePlanPolicy` node resolves the one actor/device-bound policy
+snapshot referenced by the task and produces exactly one preliminary decision for
+every validated action. Unknown capability/version pairs use the R4 default deny.
+Risk floors enforce R4 deny, forbid R3 allow and require a scoped grant for R2 allow.
+Aggregate rules match related or repeated capabilities across the complete plan and
+elevate all matches together, preventing a higher-risk operation from being split
+into individually permissive steps. An optional security specialist may recommend a
+higher risk or stricter decision; equal/weaker advice is ignored. Any deny routes the
+whole plan to `denied`, otherwise ask routes to `awaiting_approval`, and all-allow
+routes to `executing`.
+
+This graph decision is defense in depth, not final authorization. The trusted desktop
+policy engine re-resolves resources, evaluates current grants/policy and validates any
+approval immediately before execution under 130003–130006.

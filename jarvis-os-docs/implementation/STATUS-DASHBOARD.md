@@ -7,7 +7,7 @@ Last updated: 2026-07-03
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 15 | 8 | 0 | 0 | 7 |
+| LangGraph brain | 15 | 7 | 0 | 0 | 8 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
@@ -18,7 +18,7 @@ Last updated: 2026-07-03
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
 | Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
-| **Total** | **174** | **154** | **0** | **0** | **20** |
+| **Total** | **174** | **153** | **0** | **0** | **21** |
 
 Complete functions:
 
@@ -40,6 +40,7 @@ Complete functions:
 - `120003` — typed local-model intent classification with deterministic clarification routing.
 - `120004` — bounded typed plan drafts using registered capabilities and opaque resources only.
 - `120005` — deterministic schema, DAG, resource, uniqueness, verification and budget validation.
+- `120006` — deny-by-default per-action policy evaluation with anti-splitting elevation.
 - `120014` — allowlisted development Qwen routing with production-local Ollama enforcement.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
