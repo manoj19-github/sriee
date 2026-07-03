@@ -75,3 +75,15 @@ memory source outages degrade through safe retryable state errors. Every returne
 reference is checked against actor/device ownership and its declared kind/prefix.
 Only ordered opaque IDs enter `context_refs`; source content and arbitrary metadata
 cannot be represented by the reference contract.
+
+The implemented `classifyIntent` node resolves those references ephemerally and uses
+the loopback structured-model gateway to produce a fixed intent, confidence, target,
+authorized scope and ambiguity codes. Application rules—not the model—decide whether
+the intent is consequential or requires clarification.
+
+The implemented `createPlanDraft` node consumes only a non-ambiguous intent and an
+injected actor/device-bound planning bundle. It accepts registered capability/version
+pairs, typed scalar bindings, opaque resources, earlier-step dependencies and
+declared verification codes. Stable action and criterion IDs are application-derived.
+Raw paths, command text, nested payloads and model risk/policy decisions cannot enter
+the plan projection. Capability availability remains distinct from permission.
