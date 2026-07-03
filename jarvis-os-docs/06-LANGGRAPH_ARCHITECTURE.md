@@ -67,3 +67,11 @@ task/thread IDs; when absent, it assigns one task ID and derives the thread ID f
 The node preserves user text or transcript content exactly and returns only the
 normalized request/identity/status delta. It performs no retrieval, classification,
 model call or persistence.
+
+The implemented `loadBoundedContext` node queries injected project, capability,
+policy and memory reference sources concurrently with strict per-source deadlines and
+limits. Policy and capability references are mandatory and device-bound; project and
+memory source outages degrade through safe retryable state errors. Every returned
+reference is checked against actor/device ownership and its declared kind/prefix.
+Only ordered opaque IDs enter `context_refs`; source content and arbitrary metadata
+cannot be represented by the reference contract.

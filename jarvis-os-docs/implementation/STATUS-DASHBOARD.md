@@ -7,7 +7,7 @@ Last updated: 2026-07-03
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 15 | 12 | 0 | 0 | 3 |
+| LangGraph brain | 15 | 11 | 0 | 0 | 4 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
@@ -18,7 +18,7 @@ Last updated: 2026-07-03
 | Plugin platform | 11 | 11 | 0 | 0 | 0 |
 | Sriee companion experience | 17 | 17 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
-| **Total** | **174** | **158** | **0** | **0** | **16** |
+| **Total** | **174** | **157** | **0** | **0** | **17** |
 
 Complete functions:
 
@@ -36,6 +36,7 @@ Complete functions:
 - `110011` — stable, correlated and secret-safe API/WebSocket error mapping.
 - `120000` — versioned, deterministic LangGraph topology construction and contract validation.
 - `120001` — pure, bounded request normalization with stable task/thread identity.
+- `120002` — authorized, bounded and reference-only project/policy/capability/memory context loading.
 - `120014` — loopback-only Ollama lifecycle, health and structured local-model gateway.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 

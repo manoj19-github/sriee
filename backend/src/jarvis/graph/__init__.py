@@ -11,6 +11,17 @@ from jarvis.graph.builder import (
     routeAfterPolicy,
     routeAfterVerification,
 )
+from jarvis.graph.context import (
+    ContextClassification,
+    ContextKind,
+    ContextLoadError,
+    ContextLoadSettings,
+    ContextQuery,
+    ContextReference,
+    ContextReferenceSource,
+    ContextSources,
+    loadBoundedContext,
+)
 from jarvis.graph.normalize import (
     RequestNormalizationError,
     RequestNormalizationSettings,
@@ -21,6 +32,14 @@ from jarvis.graph.state import JarvisState
 __all__ = [
     "REQUIRED_NODE_NAMES",
     "CheckpointerSpec",
+    "ContextClassification",
+    "ContextKind",
+    "ContextLoadError",
+    "ContextLoadSettings",
+    "ContextQuery",
+    "ContextReference",
+    "ContextReferenceSource",
+    "ContextSources",
     "GraphBuildSettings",
     "GraphContractError",
     "JarvisState",
@@ -28,6 +47,7 @@ __all__ = [
     "RequestNormalizationError",
     "RequestNormalizationSettings",
     "buildJarvisGraph",
+    "loadBoundedContext",
     "normalizeRequest",
     "routeAfterApproval",
     "routeAfterPolicy",
