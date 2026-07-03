@@ -35,3 +35,8 @@ a credential. Network connectivity succeeded, and the provider returned
 `{"error":"unauthorized"}`. This is recorded as an external authentication
 prerequisite, not a successful model completion. No response text beyond the fixed
 error code and no secret was logged.
+
+After a provider-issued Bearer token was supplied through ignored `.env`, the same
+bounded request passed. Sanitized evidence: model identity matched `qwen3.6:27b`,
+`done=true`, role was `assistant`, and response content was non-empty (32 characters).
+Neither the credential nor response text was printed or committed.

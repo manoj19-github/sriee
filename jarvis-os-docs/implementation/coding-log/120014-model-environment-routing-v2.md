@@ -26,7 +26,10 @@
 A content-minimal live request using the supplied `"hii"` payload reached the endpoint
 but returned `{"error":"unauthorized"}`. No credential was supplied or discovered.
 The gateway therefore supports a caller-provided secret token, while the local
-ignored `.env` intentionally contains no guessed or placeholder credential.
+ignored `.env` initially contained no guessed or placeholder credential. After the
+user supplied a provider-issued token, it was stored only in ignored `.env`; an
+authenticated smoke call completed successfully without logging the token or response
+content.
 
 ## Security and package impact
 

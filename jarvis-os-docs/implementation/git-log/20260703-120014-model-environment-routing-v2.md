@@ -40,6 +40,11 @@ The supplied non-sensitive `"hii"` request reached the endpoint, which returned
 source or committed. A successful live model completion requires a provider-issued
 Bearer token in the ignored local `.env` or secret manager.
 
+The user subsequently supplied that credential. It was written only to ignored
+`.env`, and the authenticated smoke call passed: configured model matched,
+`done=true`, assistant role matched and content was non-empty. Only this content-free
+metadata is recorded; the token and response text remain outside Git and logs.
+
 ## Worktree isolation
 
 The implementation commit contains only the twelve provider-v2 files. The real
