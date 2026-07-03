@@ -66,6 +66,14 @@ def application() -> FastAPI:
     async def unexpected() -> None:
         raise RuntimeError(SECRET_MARKER)
 
+    @app.get("/forbidden")
+    async def forbidden() -> None:
+        raise HTTPException(status_code=403, detail=SECRET_MARKER)
+
+    @app.get("/teapot")
+    async def teapot() -> None:
+        raise HTTPException(status_code=418, detail=SECRET_MARKER)
+
     return app
 
 
@@ -198,3 +206,40 @@ def test_unknown_websocket_error_code_is_not_reflected() -> None:
 
     assert frame["payload"]["code"] == "unknown_frame"
     assert SECRET_MARKER not in str(frame)
+
+
+def test_framework_router_error_uses_the_stable_envelope() -> None:
+    with TestClient(application()) as client:
+        response = client.get(
+            "/missing",
+            headers={"X-Correlation-Id": CORRELATION_ID},
+        )
+
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "resource_not_found"
+    assert response.json()["error"]["correlation_id"] == CORRELATION_ID
+
+
+def test_generic_http_error_redacts_detail() -> None:
+    with TestClient(application()) as client:
+        response = client.get(
+            "/forbidden",
+            headers={"X-Correlation-Id": CORRELATION_ID},
+        )
+
+    assert response.status_code == 403
+    assert response.json()["error"]["code"] == "request_rejected"
+    assert SECRET_MARKER not in response.text
+
+
+def test_unlisted_http_status_is_preserved_without_reflecting_detail() -> None:
+    with TestClient(application()) as client:
+        response = client.get(
+            "/teapot",
+            headers={"X-Correlation-Id": CORRELATION_ID},
+        )
+
+    assert response.status_code == 418
+    assert response.json()["error"]["code"] == "http_error"
+    assert response.json()["error"]["retryable"] is False
+    assert SECRET_MARKER not in response.text

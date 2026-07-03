@@ -7,10 +7,11 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
+from starlette.exceptions import HTTPException
 
 from jarvis.tasks.repository import (
     ApprovalConsumedError,
@@ -102,6 +103,10 @@ ERROR_SPECS: dict[str, ErrorSpec] = {
     "internal_error": ErrorSpec(
         500,
         "The request failed unexpectedly.",
+    ),
+    "http_error": ErrorSpec(
+        500,
+        "The request could not be completed.",
     ),
     "invalid_desktop_session": ErrorSpec(
         401,
@@ -217,12 +222,17 @@ def _validation_details(error: RequestValidationError) -> dict[str, Any]:
 def _http_fallback_code(status_code: int) -> str:
     return {
         400: "bad_request",
+        401: "invalid_desktop_session",
+        403: "request_rejected",
         404: "resource_not_found",
         409: "state_conflict",
         422: "request_validation_failed",
         429: "rate_limited",
+        500: "internal_error",
+        502: "service_unavailable",
         503: "service_unavailable",
-    }.get(status_code, "request_rejected")
+        504: "service_unavailable",
+    }.get(status_code, "http_error")
 
 
 def _http_exception_code(error: HTTPException) -> str:
@@ -232,6 +242,15 @@ def _http_exception_code(error: HTTPException) -> str:
         if isinstance(candidate, str) and candidate in ERROR_SPECS:
             return candidate
     return _http_fallback_code(error.status_code)
+
+
+def _has_allowlisted_http_code(error: HTTPException) -> bool:
+    detail = error.detail
+    return (
+        isinstance(detail, dict)
+        and isinstance(detail.get("code"), str)
+        and detail["code"] in ERROR_SPECS
+    )
 
 
 def mapDomainErrors(
@@ -262,8 +281,15 @@ def mapDomainErrors(
         )
 
     spec = ERROR_SPECS[code]
+    status_code = spec.status_code
+    if (
+        isinstance(error, HTTPException)
+        and not _has_allowlisted_http_code(error)
+        and 400 <= error.status_code <= 599
+    ):
+        status_code = error.status_code
     return MappedDomainError(
-        status_code=spec.status_code,
+        status_code=status_code,
         body=ErrorBody(
             code=code,
             message=spec.message,

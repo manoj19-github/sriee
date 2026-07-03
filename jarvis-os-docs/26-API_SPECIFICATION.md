@@ -45,7 +45,10 @@ repeat the safe correlation identifier in `X-Correlation-Id`. WebSocket `error`
 frames use the same five fields as their payload. Validation details contain at most
 20 issue locations and types; rejected input, validator messages and contexts are
 not returned. Unknown exceptions become non-retryable `internal_error` responses
-without exception text or stack traces.
+without exception text or stack traces. Framework-generated routing failures pass
+through the same envelope. An HTTP exception without an allowlisted domain code
+retains its valid 4xx/5xx status while its arbitrary detail is replaced by a static
+message.
 
 ## Health probes v1
 
