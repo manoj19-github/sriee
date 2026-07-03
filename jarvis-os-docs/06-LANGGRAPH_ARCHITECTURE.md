@@ -112,3 +112,17 @@ routes to `executing`.
 This graph decision is defense in depth, not final authorization. The trusted desktop
 policy engine re-resolves resources, evaluates current grants/policy and validates any
 approval immediately before execution under 130003–130006.
+
+The implemented `pauseForApproval` node selects only the first plan-ordered `ask`
+action. It canonically binds task/thread, actor/device, exact capability/version,
+sorted typed arguments/dependencies, timeout, verification definitions and policy
+decision/version into a `sha256-v1` digest. A deterministic approval ID lets the
+injected store atomically create the pending approval and event once or return the
+same record when LangGraph restarts the node on resume.
+
+Only after persistence succeeds does the node call `interrupt()` with a bounded
+JSON-safe preview containing the exact action, parameters, opaque resource scope,
+risk, reasons, digest and expiry. No exception handler surrounds the interrupt
+control flow. Resume input is checkpointed only after it matches the strict
+approval-ID/digest/approve-or-deny transport shape; semantic authentication and
+consumption remain 120008. Execution stays in later nodes.

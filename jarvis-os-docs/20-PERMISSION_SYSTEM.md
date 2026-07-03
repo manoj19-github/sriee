@@ -24,6 +24,12 @@ Broad machine assistance is composed from narrow capabilities rather than a “f
 
 Contains approval ID, actor/device IDs, action digest, human-readable preview, exact resource scope, policy version, issued/expiry times, nonce, decision, and authenticator evidence. Any action change invalidates approval. “Approve all” cannot cover R3.
 
+The graph pause binds one action only. Its digest also covers task/thread identity,
+capability/version, sorted typed parameters and dependencies, timeout, verification
+definitions and preliminary policy decision/version. A replay uses the same
+deterministic approval identity and cannot extend expiry or append another request
+event. Other `ask` actions require their own later approval.
+
 ## Remembered grants
 
 Only eligible R1/R2 capabilities may be remembered. Grants are narrow, visible, expiring, revocable, and constrained by project/resource. A model cannot request or edit grants directly.

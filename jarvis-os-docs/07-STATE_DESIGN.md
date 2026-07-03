@@ -53,3 +53,9 @@ Persist JSON-compatible values with explicit schema versions. Never checkpoint f
 `allow|ask|deny`, R0–R4 tier, fixed reason codes, policy reference/version, optional
 opaque scoped-grant reference and whether fresh approval is required. It excludes
 action arguments, policy rule bodies, model prose and secrets.
+
+`pending_approval` contains the persisted request/event identity, timezone-aware
+issue/expiry times, exact bounded action preview and—only after interrupt resume—a
+strict `{approval_id, action_digest, decision}` candidate. The preview is
+JSON-compatible and contains no executable prose or arbitrary nested payload. The
+next node validates semantic identity, expiry and one-time use before changing status.

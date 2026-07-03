@@ -89,6 +89,19 @@ from jarvis.graph.policy import (
     SecurityRecommendation,
     evaluatePlanPolicy,
 )
+from jarvis.graph.approval import (
+    ApprovalActionPreview,
+    ApprovalInterruptPayload,
+    ApprovalPauseError,
+    ApprovalPauseService,
+    ApprovalPauseSettings,
+    ApprovalPreviewParameter,
+    ApprovalResumeCandidate,
+    PendingApprovalRecord,
+    PendingApprovalRequest,
+    PendingApprovalStore,
+    pauseForApproval,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -154,6 +167,16 @@ __all__ = [
     "SecurityAssessment",
     "SecurityPolicyAdvisor",
     "SecurityRecommendation",
+    "ApprovalActionPreview",
+    "ApprovalInterruptPayload",
+    "ApprovalPauseError",
+    "ApprovalPauseService",
+    "ApprovalPauseSettings",
+    "ApprovalPreviewParameter",
+    "ApprovalResumeCandidate",
+    "PendingApprovalRecord",
+    "PendingApprovalRequest",
+    "PendingApprovalStore",
     "RequestNormalizationError",
     "RequestNormalizationSettings",
     "buildJarvisGraph",
@@ -166,4 +189,5 @@ __all__ = [
     "routeAfterVerification",
     "validatePlan",
     "evaluatePlanPolicy",
+    "pauseForApproval",
 ]
