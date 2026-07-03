@@ -21,3 +21,9 @@ The task event stream is the integration spine. PostgreSQL/outbox is authoritati
 Events are immutable, ordered per task, idempotently consumed, and retained by class. Producers write domain change and outbox record atomically. Consumers track event IDs and tolerate duplicates/gaps. Breaking payload changes create a new event type/version.
 
 Core events include task, plan, approval, action, verification, model, connection, and audit lifecycle events. Payloads reference large artifacts and never contain secrets.
+
+Action dispatch commits queued action state, one immutable event, one outbox record
+and one bounded resource lease atomically. The outbox payload is a strict
+`action.request` with a stable dispatch ID and full-request idempotency hash.
+Redelivery is expected; consumers and the store reconcile by dispatch identity
+rather than creating another action or lease.

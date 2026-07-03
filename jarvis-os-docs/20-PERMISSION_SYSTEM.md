@@ -44,6 +44,12 @@ Only eligible R1/R2 capabilities may be remembered. Grants are narrow, visible, 
 
 Immediately before execution, re-resolve canonical resources, re-evaluate policy, verify approval signature/digest/expiry, and reject changed files/windows/targets when material to safety.
 
+Graph dispatch is an earlier defense-in-depth gate, not final desktop authorization.
+It recomputes the approval digest for every `ask` request, carries only minimal
+policy/approval proof and emits opaque resources through a durable outbox. The
+atomic dispatch store limits total in-flight work and concurrent leases per resource.
+The desktop still re-resolves resources and policy immediately before side effects.
+
 ## Graph preliminary decisions
 
 The graph stores one minimal preliminary decision per action to route plans toward

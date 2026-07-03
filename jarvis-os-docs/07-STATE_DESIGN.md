@@ -62,3 +62,10 @@ next node validates semantic identity, expiry and one-time use before changing
 status. After a successful atomic claim, the same field is replaced by a bounded
 `approval.result` projection containing only version, approval/resolution/thread/
 action identity, digest, outcome and decision time; raw resume transport is removed.
+
+Before dispatch, `action_results` accepts only strict versioned collected-result
+projections with dispatch/action/receipt identity, terminal outcome and timezone-
+aware completion time. Dispatch uses successful outcomes solely to satisfy declared
+dependencies; failed, cancelled or uncertain results never unlock dependents.
+Queued action state remains authoritative in the database rather than being
+misrepresented as a completed graph result.

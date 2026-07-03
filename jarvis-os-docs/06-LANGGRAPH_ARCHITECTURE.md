@@ -139,3 +139,22 @@ Only a bounded versioned result projection remains in checkpoint state. Approved
 routes to `executing`, denied to `denied`, and a decision resolved at or after expiry
 to `expired`. Duplicate/concurrent resolution fails closed, and this node performs
 no action dispatch or side effect beyond the atomic decision claim.
+
+The implemented `dispatchAction` node selects only the first plan-ordered unresolved
+action whose dependencies have collected successful results. It requires exact
+one-per-action policy coverage with no deny, validates the active runtime thread,
+and permits an `ask` action only when the consumed approval names the same action
+and its digest recomputes exactly from task/thread, actor/device, action,
+verification and preliminary policy fields.
+
+The node canonicalizes a bounded `action.request` containing typed scalar bindings,
+opaque resource IDs, dependencies, verification codes, timeout, minimal policy
+proof and—only for `ask`—minimal approval proof. Free-form strings, executable
+prose, unknown result actions, duplicate results and incomplete dependencies fail
+before persistence.
+
+Dispatch never invokes an executor directly. One injected atomic store operation
+must enforce trusted global/per-resource in-flight limits while creating or
+returning the exact queued action state, event, outbox record and expiring resource
+lease. Stable dispatch identity plus a full-request SHA-256 idempotency key make node
+replay safe: it cannot append another event/outbox or acquire a second lease.

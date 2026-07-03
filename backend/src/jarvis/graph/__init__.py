@@ -112,6 +112,21 @@ from jarvis.graph.approval_resume import (
     ApprovalResumeError,
     resumeApproval,
 )
+from jarvis.graph.dispatch import (
+    ActionApprovalProof,
+    ActionDispatchCapacityError,
+    ActionDispatchError,
+    ActionDispatchLimits,
+    ActionDispatchRecord,
+    ActionDispatchRequest,
+    ActionDispatchService,
+    ActionDispatchSettings,
+    ActionDispatchStore,
+    ActionPolicyProof,
+    ActionRequestArgument,
+    PriorActionResult,
+    dispatchAction,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -191,6 +206,18 @@ __all__ = [
     "ApprovalResolutionStore",
     "ApprovalResult",
     "ApprovalResumeError",
+    "ActionApprovalProof",
+    "ActionDispatchCapacityError",
+    "ActionDispatchError",
+    "ActionDispatchLimits",
+    "ActionDispatchRecord",
+    "ActionDispatchRequest",
+    "ActionDispatchService",
+    "ActionDispatchSettings",
+    "ActionDispatchStore",
+    "ActionPolicyProof",
+    "ActionRequestArgument",
+    "PriorActionResult",
     "PendingApprovalRecord",
     "PendingApprovalRequest",
     "PendingApprovalStore",
@@ -208,4 +235,5 @@ __all__ = [
     "evaluatePlanPolicy",
     "pauseForApproval",
     "resumeApproval",
+    "dispatchAction",
 ]
