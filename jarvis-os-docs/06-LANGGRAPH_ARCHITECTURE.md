@@ -126,3 +126,16 @@ risk, reasons, digest and expiry. No exception handler surrounds the interrupt
 control flow. Resume input is checkpointed only after it matches the strict
 approval-ID/digest/approve-or-deny transport shape; semantic authentication and
 consumption remain 120008. Execution stays in later nodes.
+
+The implemented `resumeApproval` node revalidates the complete pending checkpoint,
+including cross-field action/digest/policy bindings, before consulting storage. It
+requires the runtime LangGraph thread and checkpoint task/thread/actor/device
+identities to match the persisted request, then compares the resume approval ID and
+digest in constant time. An injected store must atomically authenticate and claim
+the identity-complete decision once, returning an authoritative approved, denied or
+expired resolution with time consistency enforced by the typed contract.
+
+Only a bounded versioned result projection remains in checkpoint state. Approved
+routes to `executing`, denied to `denied`, and a decision resolved at or after expiry
+to `expired`. Duplicate/concurrent resolution fails closed, and this node performs
+no action dispatch or side effect beyond the atomic decision claim.

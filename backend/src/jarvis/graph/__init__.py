@@ -102,6 +102,16 @@ from jarvis.graph.approval import (
     PendingApprovalStore,
     pauseForApproval,
 )
+from jarvis.graph.approval_resume import (
+    ApprovalCheckpoint,
+    ApprovalResolutionConsumedError,
+    ApprovalResolutionRecord,
+    ApprovalResolutionRequest,
+    ApprovalResolutionStore,
+    ApprovalResult,
+    ApprovalResumeError,
+    resumeApproval,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -174,6 +184,13 @@ __all__ = [
     "ApprovalPauseSettings",
     "ApprovalPreviewParameter",
     "ApprovalResumeCandidate",
+    "ApprovalCheckpoint",
+    "ApprovalResolutionConsumedError",
+    "ApprovalResolutionRecord",
+    "ApprovalResolutionRequest",
+    "ApprovalResolutionStore",
+    "ApprovalResult",
+    "ApprovalResumeError",
     "PendingApprovalRecord",
     "PendingApprovalRequest",
     "PendingApprovalStore",
@@ -190,4 +207,5 @@ __all__ = [
     "validatePlan",
     "evaluatePlanPolicy",
     "pauseForApproval",
+    "resumeApproval",
 ]

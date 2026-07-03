@@ -58,4 +58,7 @@ action arguments, policy rule bodies, model prose and secrets.
 issue/expiry times, exact bounded action preview and—only after interrupt resume—a
 strict `{approval_id, action_digest, decision}` candidate. The preview is
 JSON-compatible and contains no executable prose or arbitrary nested payload. The
-next node validates semantic identity, expiry and one-time use before changing status.
+next node validates semantic identity, expiry and one-time use before changing
+status. After a successful atomic claim, the same field is replaced by a bounded
+`approval.result` projection containing only version, approval/resolution/thread/
+action identity, digest, outcome and decision time; raw resume transport is removed.

@@ -30,6 +30,12 @@ definitions and preliminary policy decision/version. A replay uses the same
 deterministic approval identity and cannot extend expiry or append another request
 event. Other `ask` actions require their own later approval.
 
+Graph resume requires the active runtime thread plus checkpoint task, thread, actor
+and device identities to match the persisted request. The approval ID and action
+digest must match the strict resume candidate before the store is called. The store
+atomically claims the decision once and classifies decisions resolved at or after
+expiry as expired; duplicate or concurrent replay fails closed.
+
 ## Remembered grants
 
 Only eligible R1/R2 capabilities may be remembered. Grants are narrow, visible, expiring, revocable, and constrained by project/resource. A model cannot request or edit grants directly.
