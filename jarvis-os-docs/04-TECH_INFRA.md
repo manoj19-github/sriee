@@ -9,7 +9,7 @@
 | Orchestration | LangGraph 1.x | Durable checkpointer, interrupts, typed state |
 | Data | PostgreSQL 16+ | App data, audit index, graph checkpoints |
 | Ephemeral | Redis 7+ | Optional cache, presence, rate limits, distributed leases |
-| AI | Provider-neutral gateway; loopback Ollama development adapter | `qwen3:4b-instruct` local default; cloud providers remain optional and disabled |
+| AI | Provider-neutral Ollama-compatible gateway | Allowlisted `qwen3.6:27b` endpoint for development/test; loopback Qwen or Gemma through Ollama in production |
 | Telemetry | OpenTelemetry | Traces, metrics, structured logs; local collector |
 | Packaging | MSIX for desktop; signed Python bundle/container | Reproducible, checksummed artifacts |
 
@@ -17,7 +17,7 @@ Use supported versions at implementation time; this document intentionally avoid
 
 ## Environments
 
-- Dev: loopback services, disposable DB, fake executor, seeded scenarios.
+- Dev: disposable DB, fake executor, seeded scenarios and explicitly allowlisted model egress.
 - Test: isolated Windows VM plus containerized dependencies.
 - Preview: signed prerelease on a dedicated test device.
 - Production: per-user local installation; optional managed cloud control plane later.

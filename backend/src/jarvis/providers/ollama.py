@@ -1,4 +1,4 @@
-"""Loopback-only Ollama gateway for Global ID 120014."""
+"""Environment-routed Ollama-compatible gateway for Global ID 120014."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    SecretStr,
     ValidationError,
     field_validator,
     model_validator,
@@ -24,6 +25,8 @@ from jarvis.runtime.lifecycle import DependencyHealth
 
 MODEL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 LOOPBACK_HOSTS = frozenset({"127.0.0.1", "::1", "localhost"})
+DEVELOPMENT_REMOTE_HOSTS = frozenset({"qwen.msqube.in"})
+CHAT_PATH = "/api/chat"
 
 
 class OllamaSettingsError(RuntimeError):
@@ -39,7 +42,7 @@ class OllamaProviderError(RuntimeError):
 
 
 class OllamaSettings(BaseSettings):
-    """Immutable, loopback-only Ollama configuration."""
+    """Immutable provider configuration with production-local enforcement."""
 
     model_config = SettingsConfigDict(
         case_sensitive=False,
@@ -50,9 +53,22 @@ class OllamaSettings(BaseSettings):
         validate_default=True,
     )
 
+    environment: Literal["development", "test", "production"] = Field(
+        default="production",
+        validation_alias="JARVIS_ENV",
+    )
     base_url: str = Field(
         default="http://127.0.0.1:11434",
         validation_alias="OLLAMA_BASE_URL",
+    )
+    chat_url: str | None = Field(
+        default=None,
+        validation_alias="OLLAMA_CHAT_URL",
+    )
+    api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias="OLLAMA_API_KEY",
+        repr=False,
     )
     model: str = Field(
         default="qwen3:4b-instruct",
@@ -123,6 +139,47 @@ class OllamaSettings(BaseSettings):
             raise ValueError("OLLAMA_BASE_URL must be loopback HTTP with a port")
         return normalized
 
+    @field_validator("chat_url")
+    @classmethod
+    def validate_chat_url_syntax(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        normalized = value.strip().rstrip("/")
+        parsed = urlsplit(normalized)
+        try:
+            port = parsed.port
+        except ValueError:
+            raise ValueError("invalid chat endpoint port") from None
+        if (
+            parsed.scheme not in {"http", "https"}
+            or parsed.hostname is None
+            or parsed.username is not None
+            or parsed.password is not None
+            or parsed.path != CHAT_PATH
+            or parsed.query
+            or parsed.fragment
+            or (port is not None and not 1 <= port <= 65535)
+        ):
+            raise ValueError("invalid Ollama-compatible chat endpoint")
+        return normalized
+
+    @field_validator("api_key")
+    @classmethod
+    def validate_api_key(cls, value: SecretStr | None) -> SecretStr | None:
+        if value is None:
+            return None
+        secret = value.get_secret_value()
+        if (
+            len(secret) < 8
+            or len(secret) > 4_096
+            or any(
+                ord(character) < 33 or ord(character) > 126
+                for character in secret
+            )
+        ):
+            raise ValueError("invalid model provider credential")
+        return value
+
     @field_validator("model")
     @classmethod
     def validate_model_name(cls, value: str) -> str:
@@ -131,10 +188,57 @@ class OllamaSettings(BaseSettings):
             raise ValueError("invalid Ollama model name")
         return normalized
 
+    @model_validator(mode="after")
+    def validate_environment_routing(self) -> OllamaSettings:
+        if self.chat_url is None:
+            if self.api_key is not None:
+                raise ValueError(
+                    "local model provider does not accept credentials"
+                )
+            return self
+        parsed = urlsplit(self.chat_url)
+        is_loopback = (
+            parsed.scheme == "http"
+            and parsed.hostname in LOOPBACK_HOSTS
+            and parsed.port is not None
+        )
+        is_development_remote = (
+            self.environment in {"development", "test"}
+            and parsed.hostname in DEVELOPMENT_REMOTE_HOSTS
+            and parsed.scheme in {"http", "https"}
+            and parsed.port is None
+        )
+        if not is_loopback and not is_development_remote:
+            raise ValueError(
+                "remote model endpoint is not allowed in this environment"
+            )
+        if is_loopback and self.api_key is not None:
+            raise ValueError(
+                "local model provider does not accept credentials"
+            )
+        return self
+
+    @property
+    def remote_development(self) -> bool:
+        return (
+            self.chat_url is not None
+            and urlsplit(self.chat_url).hostname not in LOOPBACK_HOSTS
+        )
+
+    @property
+    def chat_endpoint(self) -> str:
+        return self.chat_url or CHAT_PATH
+
     def safe_diagnostics(self) -> dict[str, Any]:
         return {
             "provider": "ollama",
-            "loopback_only": True,
+            "environment": self.environment,
+            "routing": (
+                "remote_development"
+                if self.remote_development
+                else "local_ollama"
+            ),
+            "remote_egress": self.remote_development,
             "model": self.model,
             "num_ctx": self.num_ctx,
             "max_output_tokens": self.max_output_tokens,
@@ -152,7 +256,7 @@ def loadOllamaSettings(
     try:
         return OllamaSettings(_env_file=env_file, **dict(overrides or {}))
     except ValidationError:
-        raise OllamaSettingsError("Invalid local model configuration") from None
+        raise OllamaSettingsError("Invalid model provider configuration") from None
 
 
 class OllamaMessage(BaseModel):
@@ -232,7 +336,7 @@ class _OllamaApiResponse(BaseModel):
 
 
 class OllamaModelGateway:
-    """Lifecycle-managed local model gateway with no cloud fallback."""
+    """Lifecycle-managed gateway with explicit environment routing."""
 
     def __init__(
         self,
@@ -248,21 +352,52 @@ class OllamaModelGateway:
         if self._started:
             return
         if self._client is None:
-            self._client = httpx.AsyncClient(
-                base_url=self.settings.base_url,
-                timeout=httpx.Timeout(
+            client_options: dict[str, Any] = {
+                "timeout": httpx.Timeout(
                     self.settings.timeout_seconds,
                     connect=self.settings.connect_timeout_seconds,
                 ),
-                trust_env=False,
-                headers={"User-Agent": "jarvis-os-local-provider/1.0"},
-            )
+                "trust_env": False,
+                "headers": {
+                    "User-Agent": (
+                        "jarvis-os-development-provider/1.0"
+                        if self.settings.remote_development
+                        else "jarvis-os-local-provider/1.0"
+                    )
+                },
+            }
+            if not self.settings.remote_development:
+                client_options["base_url"] = self.settings.base_url
+            self._client = httpx.AsyncClient(**client_options)
         self._started = True
+
+    def _authentication_headers(self) -> dict[str, str] | None:
+        if self.settings.api_key is None:
+            return None
+        return {
+            "Authorization": (
+                "Bearer " + self.settings.api_key.get_secret_value()
+            )
+        }
 
     async def check_health(self) -> DependencyHealth:
         if not self._started or self._client is None:
             return DependencyHealth(ready=False, code="not_started")
         try:
+            if self.settings.remote_development:
+                response = await self._client.get(
+                    self.settings.chat_endpoint,
+                    headers=self._authentication_headers(),
+                )
+                if (
+                    response.status_code in {401, 403, 404}
+                    or response.status_code >= 500
+                ):
+                    return DependencyHealth(
+                        ready=False,
+                        code="unavailable",
+                    )
+                return DependencyHealth(ready=True, code="ready")
             version_response = await self._client.get("/api/version")
             tags_response = await self._client.get("/api/tags")
             if (
@@ -304,18 +439,23 @@ class OllamaModelGateway:
             ],
             "stream": False,
             "think": False,
-            "keep_alive": self.settings.keep_alive,
-            "options": {
+        }
+        if not self.settings.remote_development:
+            payload["keep_alive"] = self.settings.keep_alive
+            payload["options"] = {
                 "temperature": self.settings.temperature,
                 "num_ctx": self.settings.num_ctx,
                 "num_predict": self.settings.max_output_tokens,
-            },
-        }
+            }
         if request.response_schema is not None:
             payload["format"] = request.response_schema
 
         try:
-            response = await self._client.post("/api/chat", json=payload)
+            response = await self._client.post(
+                self.settings.chat_endpoint,
+                json=payload,
+                headers=self._authentication_headers(),
+            )
         except httpx.TimeoutException:
             raise OllamaProviderError("ollama_timeout") from None
         except httpx.HTTPError:
@@ -362,6 +502,6 @@ async def callLocalModel(
     gateway: OllamaModelGateway,
     request: OllamaChatRequest,
 ) -> OllamaChatResponse:
-    """Canonical function-map entry point for the local model gateway."""
+    """Canonical entry point for environment-routed model chat."""
 
     return await gateway.chat(request)

@@ -40,7 +40,7 @@ Complete functions:
 - `120003` — typed local-model intent classification with deterministic clarification routing.
 - `120004` — bounded typed plan drafts using registered capabilities and opaque resources only.
 - `120005` — deterministic schema, DAG, resource, uniqueness, verification and budget validation.
-- `120014` — loopback-only Ollama lifecycle, health and structured local-model gateway.
+- `120014` — allowlisted development Qwen routing with production-local Ollama enforcement.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
 ## Stage status

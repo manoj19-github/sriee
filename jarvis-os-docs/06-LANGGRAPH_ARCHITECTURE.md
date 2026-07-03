@@ -77,7 +77,8 @@ Only ordered opaque IDs enter `context_refs`; source content and arbitrary metad
 cannot be represented by the reference contract.
 
 The implemented `classifyIntent` node resolves those references ephemerally and uses
-the loopback structured-model gateway to produce a fixed intent, confidence, target,
+the environment-routed structured-model gateway to produce a fixed intent,
+confidence, target,
 authorized scope and ambiguity codes. Application rules—not the model—decide whether
 the intent is consequential or requires clarification.
 
