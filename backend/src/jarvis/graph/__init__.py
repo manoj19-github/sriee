@@ -67,6 +67,12 @@ from jarvis.graph.intent import (
     classifyIntent,
 )
 from jarvis.graph.state import JarvisState
+from jarvis.graph.validation import (
+    PlanValidationError,
+    PlanValidationService,
+    PlanValidationSettings,
+    validatePlan,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -116,6 +122,9 @@ __all__ = [
     "PlanResource",
     "PlanSuccessCriterion",
     "PlanWarningCode",
+    "PlanValidationError",
+    "PlanValidationService",
+    "PlanValidationSettings",
     "RequestNormalizationError",
     "RequestNormalizationSettings",
     "buildJarvisGraph",
@@ -126,4 +135,5 @@ __all__ = [
     "routeAfterApproval",
     "routeAfterPolicy",
     "routeAfterVerification",
+    "validatePlan",
 ]

@@ -87,3 +87,12 @@ pairs, typed scalar bindings, opaque resources, earlier-step dependencies and
 declared verification codes. Stable action and criterion IDs are application-derived.
 Raw paths, command text, nested payloads and model risk/policy decisions cannot enter
 the plan projection. Capability availability remains distinct from permission.
+
+The implemented `validatePlan` node independently revalidates the checkpointed draft
+before policy evaluation. It re-resolves the current actor/device-bound capability
+manifest and opaque resources, validates typed bindings and exact versions, checks
+the complete dependency graph for unknown edges, self-dependencies and cycles, and
+rejects duplicate action semantics. Every action must have at least one verification
+definition declared by its capability. Trusted limits bound action/criterion counts,
+arguments, dependency edges, aggregate timeout and critical-path timeout. All
+failures use content-free typed codes; no model call or side effect occurs.
