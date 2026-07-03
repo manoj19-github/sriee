@@ -43,3 +43,19 @@ Unknown errors and codes fail to fixed allowlisted contracts.
 The worktree was clean before implementation. The implementation commit staged only
 the twelve files belonging to Global ID `110011`; ignored caches, environments,
 temporary artifacts and unrelated user changes were not committed.
+
+## Integrated hardening delivery
+
+| Field | Value |
+|---|---|
+| Hardening commit | `b9dc59ea0ffa0a641cb3492288bcd6f7f8621ff4` |
+| Commit message | `fix(errors): harden HTTP error boundary` |
+| Push result | **SUCCESS** |
+| Remote update | `6c86ca1..b9dc59e master -> master` |
+
+The hardening commit was rebased onto the advanced remote branch without force-push.
+It catches framework-level Starlette routing errors and preserves valid generic HTTP
+4xx/5xx statuses while retaining static, secret-safe response messages. Verification
+completed with **25 focused tests in 1.04 seconds** and **333 backend unit tests in
+5.26 seconds**. The ignored temporary dependency environment was removed before
+staging.
