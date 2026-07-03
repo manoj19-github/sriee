@@ -7,7 +7,7 @@ Last updated: 2026-07-03
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 17 | 6 | 0 | 0 | 11 |
+| LangGraph brain | 17 | 5 | 0 | 0 | 12 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
@@ -19,7 +19,7 @@ Last updated: 2026-07-03
 | Sriee companion experience | 21 | 21 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
 | Lifestyle and entertainment | 18 | 18 | 0 | 0 | 0 |
-| **Total** | **199** | **175** | **0** | **0** | **24** |
+| **Total** | **199** | **174** | **0** | **0** | **25** |
 
 Complete functions:
 
@@ -45,6 +45,7 @@ Complete functions:
 - `120007` — replay-safe exact-action approval persistence and durable interrupt.
 - `120008` — thread-bound, digest-matched and atomically single-use approval resume.
 - `120009` — dependency-ready, approval-bound and resource-bounded action dispatch.
+- `120010` — correlated, immutable and duplicate-safe executor result collection.
 - `120014` — allowlisted development Qwen routing with production-local Ollama enforcement.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 

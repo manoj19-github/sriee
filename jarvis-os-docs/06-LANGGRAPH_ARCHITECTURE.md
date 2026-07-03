@@ -158,3 +158,23 @@ must enforce trusted global/per-resource in-flight limits while creating or
 returning the exact queued action state, event, outbox record and expiring resource
 lease. Stable dispatch identity plus a full-request SHA-256 idempotency key make node
 replay safe: it cannot append another event/outbox or acquire a second lease.
+
+The implemented `collectActionResult` node accepts a strict JSON result envelope
+containing dispatch/idempotency/task/thread/action/attempt/receipt/device identity,
+terminal outcome, timezone-aware execution times, a safe error code and opaque
+artifact references. Raw executor output, extra fields, non-JSON values and
+oversized payloads are rejected before persistence.
+
+An injected store atomically correlates the candidate with the actor/device-owned
+queued dispatch, writes one immutable result/event and releases its resource lease,
+or returns the exact existing collection for duplicate delivery. The returned
+record is revalidated against the original request and dispatch. A result completing
+after lease expiry or running beyond its action timeout is projected as `uncertain`,
+never trusted as late success.
+
+Graph replay distinguishes durable and checkpoint idempotency. If storage committed
+but the graph checkpoint is stale, the stored minimal result is appended so evidence
+is not lost. If that exact action/dispatch/receipt already exists in graph state, the
+node returns an empty append delta so reducers cannot duplicate it. Any different
+result for the action fails closed. Collection transitions to `verifying`; it does
+not equate executor success with verified task success.

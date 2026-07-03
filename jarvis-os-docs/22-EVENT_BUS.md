@@ -27,3 +27,10 @@ and one bounded resource lease atomically. The outbox payload is a strict
 `action.request` with a stable dispatch ID and full-request idempotency hash.
 Redelivery is expected; consumers and the store reconcile by dispatch identity
 rather than creating another action or lease.
+
+Executor `action.result` delivery carries one attempt/receipt plus exact dispatch,
+idempotency, task, thread, action and executor-device identity. The atomic collector
+matches the queued action, appends one immutable result event and releases the
+resource lease in one transaction. Identical redelivery returns the stored
+collection; a different receipt or payload for the same dispatch is a conflict.
+Payload bodies remain in separately authorized artifacts, never the event frame.

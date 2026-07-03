@@ -69,3 +69,10 @@ aware completion time. Dispatch uses successful outcomes solely to satisfy decla
 dependencies; failed, cancelled or uncertain results never unlock dependents.
 Queued action state remains authoritative in the database rather than being
 misrepresented as a completed graph result.
+
+Collection appends only the minimal `action.result` v1 projection:
+`dispatch_id`, `action_id`, `receipt_id`, terminal outcome and completion time.
+Attempt details, safe error code and artifact references remain in the correlated
+durable result/event rather than being copied into graph state. Action, dispatch and
+receipt identities are unique in one checkpoint. A late or timeout-overrun receipt
+is `uncertain`; only later verification can determine task success.

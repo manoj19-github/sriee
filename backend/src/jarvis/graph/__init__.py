@@ -127,6 +127,19 @@ from jarvis.graph.dispatch import (
     PriorActionResult,
     dispatchAction,
 )
+from jarvis.graph.action_result import (
+    ActionResultCollectionRecord,
+    ActionResultCollectionRequest,
+    ActionResultConflictError,
+    ActionResultCorrelationError,
+    ActionResultError,
+    ActionResultNotFoundError,
+    ActionResultService,
+    ActionResultSettings,
+    ActionResultStore,
+    ExecutorActionResult,
+    collectActionResult,
+)
 
 __all__ = [
     "REQUIRED_NODE_NAMES",
@@ -218,6 +231,16 @@ __all__ = [
     "ActionPolicyProof",
     "ActionRequestArgument",
     "PriorActionResult",
+    "ActionResultCollectionRecord",
+    "ActionResultCollectionRequest",
+    "ActionResultConflictError",
+    "ActionResultCorrelationError",
+    "ActionResultError",
+    "ActionResultNotFoundError",
+    "ActionResultService",
+    "ActionResultSettings",
+    "ActionResultStore",
+    "ExecutorActionResult",
     "PendingApprovalRecord",
     "PendingApprovalRequest",
     "PendingApprovalStore",
@@ -236,4 +259,5 @@ __all__ = [
     "pauseForApproval",
     "resumeApproval",
     "dispatchAction",
+    "collectActionResult",
 ]

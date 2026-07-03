@@ -24,6 +24,13 @@ On reconnect, client sends last durable sequence and fetches gaps. Messages may 
 
 Unknown major versions close with a protocol error. Invalid, oversized, unauthorized, or rate-limited frames are rejected and audited. Approval frames repeat the action digest and are processed through the same REST use case.
 
+`action.result` v1 contains only dispatch and request idempotency IDs, task/thread/
+action/attempt/receipt IDs, executor device ID, terminal outcome, timezone-aware
+start/completion times, optional safe error code and opaque artifact references.
+It forbids raw stdout, file content, screenshots, exception text and extra fields.
+The backend acknowledges transport receipt only after atomic correlation/persistence;
+this acknowledgement is not outcome verification.
+
 ## Implemented desktop session v1
 
 Endpoint: `/api/v1/ws`.
