@@ -94,3 +94,8 @@ append-reduced results or observations. Any action with a collected result and i
 criteria remain exact in the replacement plan. `policy_decisions` becomes empty and
 `pending_approval` becomes null, forcing validation and fresh policy/approval for the
 revision. At most two revisions are accepted.
+
+`final_response` contains a versioned stable response/task/thread identity, terminal
+status, fixed bounded summary, optional verified outcome/verification ID, sorted
+opaque evidence and receipt references, fixed unresolved issue codes and render
+time. It contains no raw result/artifact content or model reasoning.

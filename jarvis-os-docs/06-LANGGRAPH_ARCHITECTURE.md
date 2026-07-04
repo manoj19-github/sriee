@@ -209,3 +209,13 @@ unsuccessful receipts, validates the complete revised plan and persists one stab
 immutable revision. Projection increments `revision_count`, clears preliminary
 policy and pending approval, and returns to `planning`; results and observations
 remain append-only evidence.
+
+The implemented `renderFinalResponse` node revalidates terminal status against stored
+verification, policy, approval and receipt projections, then applies fixed concise
+templates. Succeeded/partially-succeeded claims require matching independent
+verification; exhausted uncertainty is described as unverified rather than failed.
+Only opaque evidence/receipt references and fixed unresolved codes are exposed.
+
+One stable actor/device-owned response is loaded or persisted before checkpoint
+projection. Exact checkpoint replay performs no I/O, and no model prose,
+chain-of-thought, raw artifact content or guessed completion can enter the response.
