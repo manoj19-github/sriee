@@ -93,6 +93,18 @@ from jarvis.graph.verification import (
     VerifiedOutcome,
     verifyOutcome,
 )
+from jarvis.graph.revision import (
+    PlanRevisionError,
+    PlanRevisionPersistenceRequest,
+    PlanRevisionRecord,
+    PlanRevisionService,
+    PlanRevisionSettings,
+    PlanRevisionStore,
+    PlanRevisionStoreConflictError,
+    ScopeCorrection,
+    ScopeCorrectionReason,
+    revisePlan,
+)
 from jarvis.graph.policy import (
     PlanPolicyError,
     PlanPolicyService,
@@ -278,6 +290,15 @@ __all__ = [
     "VerificationStore",
     "VerificationStoreConflictError",
     "VerifiedOutcome",
+    "PlanRevisionError",
+    "PlanRevisionPersistenceRequest",
+    "PlanRevisionRecord",
+    "PlanRevisionService",
+    "PlanRevisionSettings",
+    "PlanRevisionStore",
+    "PlanRevisionStoreConflictError",
+    "ScopeCorrection",
+    "ScopeCorrectionReason",
     "PendingApprovalRecord",
     "PendingApprovalRequest",
     "PendingApprovalStore",
@@ -298,4 +319,5 @@ __all__ = [
     "dispatchAction",
     "collectActionResult",
     "verifyOutcome",
+    "revisePlan",
 ]

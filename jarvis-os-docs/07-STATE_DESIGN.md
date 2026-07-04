@@ -88,3 +88,9 @@ An uncertain verification is evidence, not a canonical terminal task status.
 Retryable uncertainty routes to `planning` while revision budget remains. Exhausted
 or permanent uncertainty maps to task `failed` but remains `uncertain` in the stored
 aggregate so final rendering cannot misstate it as a confirmed failed postcondition.
+
+Plan revision replaces `plan` and increments `revision_count` but never removes
+append-reduced results or observations. Any action with a collected result and its
+criteria remain exact in the replacement plan. `policy_decisions` becomes empty and
+`pending_approval` becomes null, forcing validation and fresh policy/approval for the
+revision. At most two revisions are accepted.

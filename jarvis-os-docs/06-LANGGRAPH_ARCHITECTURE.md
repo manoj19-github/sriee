@@ -197,3 +197,15 @@ Stable plan/revision identity makes database recovery and checkpoint replay safe
 Stored/checkpointed outcome, counts, recovery, criterion/action/receipt bindings,
 evidence timing and observation IDs are recomputed before routing, so a structurally
 valid forged aggregate cannot change workflow status.
+
+The implemented `revisePlan` node accepts only current-revision recoverable
+verification evidence or an identity-bound corrected-scope candidate and enforces
+the two-revision ceiling. It resolves current registered capabilities/resources and
+uses the same strict typed plan schema as initial planning.
+
+The model may return only corrective actions. Application code merges every action
+and criterion already backed by an append-only result, rejects new dependencies on
+unsuccessful receipts, validates the complete revised plan and persists one stable
+immutable revision. Projection increments `revision_count`, clears preliminary
+policy and pending approval, and returns to `planning`; results and observations
+remain append-only evidence.

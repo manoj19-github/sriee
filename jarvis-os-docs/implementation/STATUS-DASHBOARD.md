@@ -7,7 +7,7 @@ Last updated: 2026-07-04
 | Component | Total | Planned | In progress | Blocked | Complete |
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
-| LangGraph brain | 17 | 4 | 0 | 0 | 13 |
+| LangGraph brain | 17 | 3 | 0 | 0 | 14 |
 | Security and policy | 12 | 12 | 0 | 0 | 0 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
@@ -19,7 +19,7 @@ Last updated: 2026-07-04
 | Sriee companion experience | 21 | 21 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
 | Lifestyle and entertainment | 18 | 18 | 0 | 0 | 0 |
-| **Total** | **199** | **173** | **0** | **0** | **26** |
+| **Total** | **199** | **172** | **0** | **0** | **27** |
 
 Complete functions:
 
@@ -47,6 +47,7 @@ Complete functions:
 - `120009` — dependency-ready, approval-bound and resource-bounded action dispatch.
 - `120010` — correlated, immutable and duplicate-safe executor result collection.
 - `120011` — independent read-only postcondition evidence and deterministic outcome verification.
+- `120012` — bounded immutable plan revision with executed-work preservation and fresh policy reset.
 - `120014` — allowlisted development Qwen routing with production-local Ollama enforcement.
 - `140000` — PostgreSQL schema `jarvis` exists; this is infrastructure evidence only.
 
