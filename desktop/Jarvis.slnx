@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Jarvis.Security/Jarvis.Security.csproj" />
+  <Project Path="tests/Jarvis.Security.Tests/Jarvis.Security.Tests.csproj" />
+</Solution>

@@ -95,3 +95,35 @@ Create a deep dive for a consequential decision, incident, security finding, une
   protection from a malicious local reverse proxy is required.
 - Revisit trigger/date: before exposing handshake routes or implementing 150001.
 - ADR/issues/tests: Global ID 130001 records and `test_session_auth.py`.
+
+## DD-20260705-003 — Keep the local policy baseline authoritative
+
+- Global IDs/stage: 130002 / desktop transport.
+- Context/deadline: the model and backend are untrusted policy inputs; neither may
+  replace the desktop's minimum restrictions or turn a denial into authority.
+- Evidence and measurements: .NET 10 provides platform ECDSA P-256 verification,
+  immutable collections and strict JSON unmapped-member handling without a runtime
+  package. The 26-test suite exercises forgery, ambiguity and overlay abuse.
+- Constraints: baseline is packaged locally, signer identity is pinned, default is
+  always deny, unknown versions fail, local admin/user customization remains useful,
+  and no raw policy content enters diagnostics or the effective object.
+- Options considered: unsigned JSON; signed baseline with arbitrary overlay
+  replacement; signed baseline with ordered tightening-only overlays.
+- Experiments: payload/key/signature tampering, duplicate properties, unknown fields,
+  noncanonical versions, rule limits, overlay relaxation, source mutation between
+  reads and deterministic Release builds with warnings as errors.
+- Decision: sign a domain-separated v1 envelope over exact payload bytes with
+  P-256/SHA-256 and a pinned key ID. Require a strict `1.x.y` deny-default document.
+  Apply admin then user overlays only when every rule is known and no decision moves
+  upward through `deny < ask < allow`.
+- Tradeoffs: v1 intentionally excludes wildcard/resource predicates until evaluation
+  contract 130003 defines them. Any malformed local overlay blocks policy load rather
+  than being silently ignored.
+- Security/privacy effect: backend/model data is absent from the loader API; unknown
+  capabilities deny; overlays cannot expand authority; source buffers are copied
+  immediately to close mutation races; returned state is immutable and public-only.
+- Confidence/unknowns: high for load-time authenticity and monotonic overlay merge.
+  Package installer ACL/signing integration remains a later desktop composition task.
+- Revisit trigger/date: before implementing 130003 or adding policy schema v2.
+- ADR/issues/tests: Global ID 130002 records and
+  `PolicyBaselineLoaderTests.cs`.

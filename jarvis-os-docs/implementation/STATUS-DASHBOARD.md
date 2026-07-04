@@ -8,7 +8,7 @@ Last updated: 2026-07-05
 |---|---:|---:|---:|---:|---:|
 | FastAPI platform | 12 | 0 | 0 | 0 | 12 |
 | LangGraph brain | 17 | 0 | 0 | 0 | 17 |
-| Security and policy | 12 | 10 | 0 | 0 | 2 |
+| Security and policy | 12 | 9 | 0 | 0 | 3 |
 | Data, memory, and RAG | 13 | 12 | 0 | 0 | 1 |
 | C# desktop shell | 12 | 12 | 0 | 0 | 0 |
 | Windows executor | 14 | 14 | 0 | 0 | 0 |
@@ -19,7 +19,7 @@ Last updated: 2026-07-05
 | Sriee companion experience | 21 | 21 | 0 | 0 | 0 |
 | Developer coach and wellness | 25 | 25 | 0 | 0 | 0 |
 | Lifestyle and entertainment | 18 | 18 | 0 | 0 | 0 |
-| **Total** | **199** | **167** | **0** | **0** | **32** |
+| **Total** | **199** | **166** | **0** | **0** | **33** |
 
 Complete functions:
 
@@ -27,6 +27,8 @@ Complete functions:
   non-exportable Windows CNG key and public-only registry record.
 - `130001` — one-time device-proof handshake with backend/user-session binding,
   bounded replay challenges and atomic session rotation.
+- `130002` — pinned-signature local policy loading with strict deny-by-default
+  schema and tightening-only admin/user overlays.
 - `110000` — typed immutable settings loading, safe diagnostics and validation.
 - `110001` — ordered FastAPI startup, readiness, rollback, bounded drain and shutdown.
 - `110002` — signed desktop-session authentication, registry binding, contract negotiation and replay protection.

@@ -16,4 +16,8 @@ htmlcov/
 logs/
 dist/
 build/
+**/bin/
+**/obj/
+**/TestResults/
+*.user
 *.egg-info/
