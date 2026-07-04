@@ -219,3 +219,10 @@ Only opaque evidence/receipt references and fixed unresolved codes are exposed.
 One stable actor/device-owned response is loaded or persisted before checkpoint
 projection. Exact checkpoint replay performs no I/O, and no model prose,
 chain-of-thought, raw artifact content or guessed completion can enter the response.
+
+The optional `proposeTaskReflection` service runs outside the core execution
+topology after verified terminal evidence. It deterministically emits either no
+candidate or one immutable, fixed-code, review-required prompt/test/verification
+candidate grounded in opaque evidence and current component versions. Clean success
+without correction produces no fabricated lesson. The service has no mutation path
+to prompts, tests, policy, tools, source, configuration or memory.
