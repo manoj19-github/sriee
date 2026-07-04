@@ -27,6 +27,20 @@ from jarvis.security.device_identity import (
     WindowsInteractiveUserResolver,
     registerDeviceIdentity,
 )
+from jarvis.security.session_auth import (
+    DeviceSessionProof,
+    InMemorySessionAuthority,
+    InMemorySessionChallengeStore,
+    SessionAuthenticationError,
+    SessionAuthenticationService,
+    SessionChallenge,
+    SessionDeviceRecord,
+    SessionGrant,
+    authenticateSession,
+    buildSessionProofMessage,
+    encodeSessionProofSignature,
+    issueSessionChallenge,
+)
 
 __all__ = [
     "AuthenticatedPrincipal",
@@ -52,4 +66,16 @@ __all__ = [
     "WindowsCngDeviceKeyStore",
     "WindowsInteractiveUserResolver",
     "registerDeviceIdentity",
+    "DeviceSessionProof",
+    "InMemorySessionAuthority",
+    "InMemorySessionChallengeStore",
+    "SessionAuthenticationError",
+    "SessionAuthenticationService",
+    "SessionChallenge",
+    "SessionDeviceRecord",
+    "SessionGrant",
+    "authenticateSession",
+    "buildSessionProofMessage",
+    "encodeSessionProofSignature",
+    "issueSessionChallenge",
 ]

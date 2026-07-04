@@ -65,3 +65,33 @@ Create a deep dive for a consequential decision, incident, security finding, une
   operating system.
 - ADR/issues/tests: Global ID 130000 coding/version/testing records and
   `test_device_identity.py`.
+
+## DD-20260705-002 — Bind and rotate loopback sessions
+
+- Global IDs/stage: 130001, compatible with 110002 / desktop transport.
+- Context/deadline: A loopback peer must not gain desktop authority merely by
+  reaching the API, replaying a proof or retaining an older session token.
+- Evidence and measurements: the registered CNG P-256 key can sign a canonical
+  transcript without private export; the backend can validate SEC1 public material.
+- Constraints: challenges and sessions are short lived; actor identity comes from
+  registration; request authentication already consumes per-request nonces; contract
+  negotiation must remain compatible with 110002.
+- Options considered: loopback address trust; shared desktop secret; reusable signed
+  assertion; one-time asymmetric challenge with epoch rotation.
+- Experiments: live CNG signing/backend verification, eight-way replay race, invalid
+  proof recovery, old-session revocation and end-to-end request authentication.
+- Decision: issue 30-second, device-bound random challenges. Sign a domain-separated
+  canonical transcript covering server/client nonces, backend instance, registered
+  actor/device, Windows session and contract range. Consume only a valid proof, then
+  atomically revoke the prior session, increment epoch and issue a five-minute token.
+- Tradeoffs: the backend adds a pinned cryptographic verifier and durable deployments
+  must implement the challenge/rotation protocols atomically. The in-memory parity
+  stores are bounded but are not multi-process production persistence.
+- Security/privacy effect: loopback reachability confers no identity; proof replay,
+  signature substitution, cross-backend use, actor/device/key mismatch and stale
+  sessions fail closed. Tokens and proof material are never logged.
+- Confidence/unknowns: high for desktop-to-backend authentication and binding. A
+  future packaged desktop must pin or otherwise authenticate the backend process if
+  protection from a malicious local reverse proxy is required.
+- Revisit trigger/date: before exposing handshake routes or implementing 150001.
+- ADR/issues/tests: Global ID 130001 records and `test_session_auth.py`.

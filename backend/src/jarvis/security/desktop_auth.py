@@ -95,6 +95,8 @@ class DesktopSessionRecord:
     session_epoch: int
     expires_at: datetime
     contract_range: ContractRange
+    user_session_id: str = ""
+    backend_instance_id: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,6 +212,8 @@ class DesktopSessionToken:
         contract_range: ContractRange,
         issued_at: datetime | None = None,
         lifetime: timedelta = timedelta(minutes=5),
+        user_session_id: str | None = None,
+        backend_instance_id: str | None = None,
     ) -> str:
         now = issued_at or datetime.now(UTC)
         if now.tzinfo is None:
@@ -233,6 +237,14 @@ class DesktopSessionToken:
             "contract_max": str(contract_range.maximum),
             "token_type": TOKEN_TYPE,
         }
+        if user_session_id is not None:
+            if not user_session_id.strip():
+                raise ValueError("user session cannot be empty")
+            payload["user_session_id"] = user_session_id
+        if backend_instance_id is not None:
+            if not backend_instance_id.strip():
+                raise ValueError("backend instance cannot be empty")
+            payload["backend_instance_id"] = backend_instance_id
         return jwt.encode(payload, self._secret, algorithm=TOKEN_ALGORITHM)
 
     def decode(self, token: str) -> dict[str, Any]:
@@ -390,6 +402,20 @@ class DesktopSessionAuthenticator:
             and session.session_id == str(claims["session_id"])
             and device.session_epoch == session_epoch
             and session.session_epoch == session_epoch
+            and (
+                not session.user_session_id
+                or hmac.compare_digest(
+                    str(claims.get("user_session_id", "")),
+                    session.user_session_id,
+                )
+            )
+            and (
+                not session.backend_instance_id
+                or hmac.compare_digest(
+                    str(claims.get("backend_instance_id", "")),
+                    session.backend_instance_id,
+                )
+            )
         ):
             raise ValueError("registry mismatch")
 

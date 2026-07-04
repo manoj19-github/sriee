@@ -115,6 +115,9 @@ class DeviceKeyStore(Protocol):
     def read_public_key(self, key_reference: str) -> bytes:
         """Read public material without exposing the private key."""
 
+    def sign(self, key_reference: str, message: bytes) -> bytes:
+        """Sign a message with the non-exportable installation key."""
+
 
 class DeviceIdentityRegistry(Protocol):
     async def get_by_installation(
@@ -359,6 +362,16 @@ if sys.platform == "win32":
     ]
     _ncrypt.NCryptDeleteKey.argtypes = [ctypes.c_void_p, wintypes.DWORD]
     _ncrypt.NCryptFreeObject.argtypes = [ctypes.c_void_p]
+    _ncrypt.NCryptSignHash.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+        wintypes.DWORD,
+        ctypes.c_void_p,
+        wintypes.DWORD,
+        ctypes.POINTER(wintypes.DWORD),
+        wintypes.DWORD,
+    ]
     _kernel32.GetCurrentProcess.restype = wintypes.HANDLE
     _kernel32.GetCurrentProcessId.restype = wintypes.DWORD
     _kernel32.ProcessIdToSessionId.argtypes = [
@@ -494,6 +507,66 @@ class WindowsCngDeviceKeyStore:
             self._check(status)
             self._check(_ncrypt.NCryptDeleteKey(key, self._silent_flag))
             key = ctypes.c_void_p()
+        finally:
+            if key.value:
+                _ncrypt.NCryptFreeObject(key)
+            _ncrypt.NCryptFreeObject(provider)
+
+    def sign(self, key_reference: str, message: bytes) -> bytes:
+        if (
+            not isinstance(message, bytes)
+            or not message
+            or len(message) > 4096
+        ):
+            raise ValueError("message must contain 1 to 4096 bytes")
+        provider = self._open_provider()
+        key = ctypes.c_void_p()
+        try:
+            self._check(
+                _ncrypt.NCryptOpenKey(
+                    provider,
+                    ctypes.byref(key),
+                    key_reference,
+                    0,
+                    self._silent_flag,
+                )
+            )
+            if self._read_export_policy(key) != 0:
+                raise OSError("CNG private-key export policy is not disabled")
+            digest = hashlib.sha256(message).digest()
+            digest_buffer = (ctypes.c_ubyte * len(digest)).from_buffer_copy(
+                digest
+            )
+            size = wintypes.DWORD()
+            self._check(
+                _ncrypt.NCryptSignHash(
+                    key,
+                    None,
+                    digest_buffer,
+                    len(digest),
+                    None,
+                    0,
+                    ctypes.byref(size),
+                    self._silent_flag,
+                )
+            )
+            signature = (ctypes.c_ubyte * size.value)()
+            self._check(
+                _ncrypt.NCryptSignHash(
+                    key,
+                    None,
+                    digest_buffer,
+                    len(digest),
+                    signature,
+                    size.value,
+                    ctypes.byref(size),
+                    self._silent_flag,
+                )
+            )
+            raw = bytes(signature[: size.value])
+            if len(raw) != 64:
+                raise OSError("unexpected CNG P-256 signature size")
+            return raw
         finally:
             if key.value:
                 _ncrypt.NCryptFreeObject(key)
