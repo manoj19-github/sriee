@@ -15,6 +15,18 @@ from jarvis.security.desktop_auth import (
     authenticate_desktop_session,
     authenticateDesktopSession,
 )
+from jarvis.security.device_identity import (
+    DeviceIdentity,
+    DeviceIdentityConflictError,
+    DeviceRegistrationError,
+    DeviceRegistrationService,
+    InMemoryDeviceIdentityRegistry,
+    InteractiveUser,
+    KeyProtection,
+    WindowsCngDeviceKeyStore,
+    WindowsInteractiveUserResolver,
+    registerDeviceIdentity,
+)
 
 __all__ = [
     "AuthenticatedPrincipal",
@@ -30,4 +42,14 @@ __all__ = [
     "SessionStatus",
     "authenticate_desktop_session",
     "authenticateDesktopSession",
+    "DeviceIdentity",
+    "DeviceIdentityConflictError",
+    "DeviceRegistrationError",
+    "DeviceRegistrationService",
+    "InMemoryDeviceIdentityRegistry",
+    "InteractiveUser",
+    "KeyProtection",
+    "WindowsCngDeviceKeyStore",
+    "WindowsInteractiveUserResolver",
+    "registerDeviceIdentity",
 ]
