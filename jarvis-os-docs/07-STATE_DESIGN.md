@@ -76,3 +76,15 @@ Attempt details, safe error code and artifact references remain in the correlate
 durable result/event rather than being copied into graph state. Action, dispatch and
 receipt identities are unique in one checkpoint. A late or timeout-overrun receipt
 is `uncertain`; only later verification can determine task success.
+
+Verification appends one `verification.criterion` observation per success criterion
+and one `outcome.verification` aggregate. Criterion observations retain stable
+verification/observation/criterion/action identity, optional correlated receipt,
+fixed verification/probe/verdict/reason fields, retryability, timestamp and opaque
+evidence references. The aggregate retains deterministic counts, outcome,
+recoverability, revision and action/result coverage.
+
+An uncertain verification is evidence, not a canonical terminal task status.
+Retryable uncertainty routes to `planning` while revision budget remains. Exhausted
+or permanent uncertainty maps to task `failed` but remains `uncertain` in the stored
+aggregate so final rendering cannot misstate it as a confirmed failed postcondition.

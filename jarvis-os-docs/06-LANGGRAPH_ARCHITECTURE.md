@@ -178,3 +178,22 @@ is not lost. If that exact action/dispatch/receipt already exists in graph state
 node returns an empty append delta so reducers cannot duplicate it. Any different
 result for the action fails closed. Collection transitions to `verifying`; it does
 not equate executor success with verified task success.
+
+The implemented `verifyOutcome` node resolves a read-only probe for each exact
+capability/version/verification-code criterion and supplies only typed action
+bindings, opaque resources and the correlated receipt identity. Executor outcome is
+not used as criterion proof: a successful receipt can fail verification, while an
+executor failure may still have independently observable successful postconditions.
+
+Definite pass/fail evidence requires opaque evidence references. Missing receipts,
+missing probes, timeout and read-path outage become explicit uncertainty; malformed,
+stale or mis-correlated probe evidence fails closed. The application deterministically
+derives succeeded, partially succeeded, failed or uncertain from all criteria.
+Revision occurs only when every unresolved criterion is retryable and the two-
+revision budget remains.
+
+One immutable verification record is loaded or recorded through an injected store.
+Stable plan/revision identity makes database recovery and checkpoint replay safe.
+Stored/checkpointed outcome, counts, recovery, criterion/action/receipt bindings,
+evidence timing and observation IDs are recomputed before routing, so a structurally
+valid forged aggregate cannot change workflow status.
