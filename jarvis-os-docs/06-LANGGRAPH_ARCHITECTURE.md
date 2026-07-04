@@ -226,3 +226,14 @@ candidate or one immutable, fixed-code, review-required prompt/test/verification
 candidate grounded in opaque evidence and current component versions. Clean success
 without correction produces no fabricated lesson. The service has no mutation path
 to prompts, tests, policy, tools, source, configuration or memory.
+
+The optional `coordinateSpecialistWorkflow` service also runs outside the core
+execution topology. It accepts one digest-bound, identity-bound and unexpired approved
+workflow with at most eight declared planner/research/coder/reviewer/security/verifier
+steps and depth two. Exact registry contracts, per-step deadlines, dependency blocking
+and stable provenance govern every typed read-only handoff; only opaque context,
+evidence and proposal references cross specialist boundaries.
+
+Specialist output is an observation, never authorization or execution. The aggregate
+contract marks consensus as non-evidence and requires every proposed mutation to
+re-enter the standard plan, policy, approval and action pipeline.
